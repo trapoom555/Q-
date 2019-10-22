@@ -1,8 +1,8 @@
 <template>
 <div>
     <img src = "../assets/logo.png" class = "logo">
-    <button class = "pressQueue">กดคิว</button>
-    <button class = "backToQueue">กลับไปดูคิวของคุณ</button>
+    <router-link to = "/QueueGlance"><button class = "pressQueue">กดคิว</button></router-link>
+    <router-link to = "/Login"><button class = "backToQueue">กลับไปดูคิวของคุณ</button></router-link>
 </div>
 </template>
 
@@ -13,6 +13,9 @@ export default {
 </script>
 
 <style scoped>
+a {
+ text-decoration: none;
+}
 .logo {
     width: 50%;
     height: auto;
@@ -26,7 +29,7 @@ export default {
     margin:  30% auto 12% auto;
     width: 70%;
     height: 50px;
-    font-size: 5vw;
+    font-size: 4vw;
     border: none;
 
 }
@@ -35,10 +38,13 @@ export default {
     width: 70%;
     margin: auto;
     height:50px;
-    font-size: 5vw;
+    font-size: 4vw;
     background-color:white;
     border-radius: 5px;
     border: 1px solid #939393;
+}
+* {
+    font-family: 'Noto Sans Thai Cound', sans-serif;
 }
 
 

@@ -1,30 +1,36 @@
 <template>
 
   <div id="app">
-  <!-- <Home/> -->
-  <!-- <QueueGlance/> -->
-  <router-link to = "Home">Home</router-link>
   <router-view></router-view>
   </div>
 </template>
 
 <script>
-// import Home from './pages/Home.vue'
-// import QueueGlance from './pages/QueueGlance.vue'
 export default {
   name: 'app'
 }
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed');
-html ,body {
-  font-family: 'Roboto Condensed', sans-serif;
+@font-face {
+    font-family: 'Noto Sans Thai Cound';
+    src: url('./assets/NotoSansThaiUI-Regular.woff2');
 }
+
 #app {
   font-size:10px;
-  font-family: 'Roboto Condensed', sans-serif;
+  font-family: 'Noto Sans Thai Cound', sans-serif;
   text-align: center;
-  margin-top: 60px;
+  margin-top: 0px;
+  padding-top: 0px;
+  overflow: hidden;
+}
+a {
+  text-decoration: none;
+}
+html, body {
+  font-family: 'Noto Sans Thai Cound', sans-serif;
+  margin: 0px;
+  padding: 0px;
 }
 </style>
