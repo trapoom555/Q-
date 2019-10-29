@@ -1,28 +1,38 @@
 <template>
-    <div class="body-back" style="padding-top:10%;">
-
-        <div class="box-text" style="border-right:1px solid gray;">รับยา</div>
-        <div class="box-text" style="width :20%;">{{getDreucRoom}} ห้องรับยา</div>
-        <div class="body-back" >
+    <div class="body-back" style="padding-top:0%;">
+<div class = "gradient-background">
+        <div class="box-text-topic" style="border-right:1px solid gray;">รับยา</div>
+        <div class="box-text" style="width :20%;"> ห้องรับยา</div>
 
             <div class="pictur-room" style="text-align:center;">
-                {{picturRoom}}<img src="C:/Users/Lenovo/Desktop/qplus/iPhone-11-Pro.jpg">
+                <img class = "pictureRoom" src="../assets/room.jpg">
             </div>
-            <div class="pictur-room" style="">สถานที่ :</div>
-            <div class="pictur-room" style="padding-top:2%; padding-left:50px;">
-                {{" ที่ไหนซักที่ "+drugeRoom}}
+</div>
+            <div class="text-room-topic" style="">สถานที่ :</div>
+            <div class="text-room" style="padding-top:2%; padding-left:50px;">
+                {{place}}
             </div>
-            <div class="pictur-room" style=" padding-top:2%">
+            <div class="text-room" style=" padding-top:2%">
                 {{"แผนก "+1+"  ชั้นที่ "+1}} :
             </div>
-            <div class="pictur-room" style=" padding-top:2% ;text-align:center;">
-                {{planHos}} แผนที่โรงบาล <img src="">
+            <div class="text-room" style=" padding-top:2% ;text-align:center;">
+                {{planHos}}
+                <div><img class = "plan" src="../assets/place.jpg"></div>
             </div>
-        </div>
         
     </div>
     
 </template>
+<script>
+export default {
+    name : 'DrugPage',
+    data: function() {
+        return {
+            place: "อาคารสุเมธ"
+        }
+    }
+}
+</script>
 <style>
 
 .body-back{
@@ -31,31 +41,74 @@
     padding-top:5%;
 }
 
-.pictur-room{
+.text-room{
     width:80%;
     margin :auto;
     text-align:left;
     padding-top:3%;
     border-radius: 10px;
+    font-size: 3.75vw;
+    margin-top: 2%;
+}
+.text-room-topic {
+    width:80%;
+    margin :auto;
+    text-align:left;
+    padding-top:3%;
+    border-radius: 10px;
+    font-size: 3.75vw;
+    margin-top: 2%;
+    font-weight: bold;
 }
 .box-text{
     width: 10%;
     display:inline-block;
     margin: auto;
     vertical-align: -50%;
-    font-size:4vw ;
+    font-size:4.5vw ;
     padding:0 1%;
+    margin-top: 10%;
+    margin-bottom: 5%;
 }
+
+.box-text-topic{
+    width: 12%;
+    display:inline-block;
+    margin: auto;
+    vertical-align: -50%;
+    font-size:4.5vw ;
+    padding:0 1%;
+    margin-top: 10%;
+    margin-bottom: 5%;
+    font-weight: bold;
+}
+
 * {
     font-family: 'Noto Sans Thai Cound', sans-serif;
 }
-</style>
-
-<script>
-export default {
-  name: 'Drugpage',
-  props: {
-    msg: String
-  }
+.plan {
+    width: 90%;
+    height:auto;
+    -webkit-box-shadow: 4px 6px 8px -5px rgba(71,71,71,0.59);
+-moz-box-shadow: 4px 6px 8px -5px rgba(71,71,71,0.59);
+box-shadow: 4px 6px 8px -5px rgba(71,71,71,0.59);
+margin-bottom: 5%;
 }
-</script>
+
+.pictureRoom {
+    margin-top: 10%;
+    width: 70%;
+    border-radius: 10px;
+    margin: auto;
+    -webkit-box-shadow: 4px 6px 31px -5px rgba(71,71,71,0.59);
+-moz-box-shadow: 4px 6px 31px -5px rgba(71,71,71,0.59);
+box-shadow: 4px 6px 31px -5px rgba(71,71,71,0.59);
+}
+.gradient-background {
+    background: linear-gradient(273.76deg, #7FBCEB -3.52%, rgba(255, 255, 255, 0) 114.63%), #92E0D0;
+    padding-bottom: 6%;
+}
+body {
+    padding-bottom: 5%;
+}
+</style>

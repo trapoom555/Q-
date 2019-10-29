@@ -1,8 +1,8 @@
 <template>
 <div>
     <img src = "../assets/logo.png" class = "logo">
-    <router-link to = "/QueueGlance"><button class = "pressQueue">กดคิว</button></router-link>
-    <router-link to = "/Login"><button class = "backToQueue">กลับไปดูคิวของคุณ</button></router-link>
+    <router-link to = "/QueueGlance"><button class = "pressQueue">Register</button></router-link>
+    <router-link to = "/Login"><button class = "backToQueue">Login</button></router-link>
 </div>
 </template>
 

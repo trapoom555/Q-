@@ -34,6 +34,7 @@ img {
     width: 40%;
     margin: auto;
     margin-bottom: 5%;
+    margin-top: 10%;
 }
 p {
     font-size: 4.5vw;
