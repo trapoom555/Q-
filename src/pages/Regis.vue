@@ -6,27 +6,86 @@
     <p  :class = "{wrongID: !isIDtrue, trueID: isIDtrue}">คุณใส่หมายเลขบัตรประชาชนผิด</p>
     <input type="text" id="lname" name="Brith day" placeholder="กรอกวันเกิด (วว/ดด/ปป)" v-model = "onChangeBirthday">
     <p :class = "{wrongBirthDay: !isBirthdayTrue, trueBirthDay: isBirthdayTrue}">กรุณาใส่วันเกิดในรูปแบบ วว/ดด/ปป</p>
-    <router-link :class = "{disable: !isID || !isBirthday}" to="/Notification"><input type="submit" value="ต่อไป" v-on:click = "checkID"></router-link>
+    <router-link :class = "{disable: !isID || !isBirthday}" to="/Notification"><input type="submit" value="ต่อไป" v-on:click = "register"></router-link>
   </form>
 </div>
 </template>
 
 <script>
+import { rtb } from "../firebase";
+const users = rtb.collection('user')
 export default {
     name:'Regis',
     data: function() {
         return{
-            ID: '',
+            user: '',
+            ID: '1509966059869',
             isIDtrue: true,
             isIDcomplete: false,
             isID: false,
-            birthDay: '',
+            birthDay: '28/05/43',
             isBirthdayTrue: true,
             isBirthdayComplete: false,
-            isBirthday: false
+            isBirthday: false,
+            out: ''
         }  
     },
+    created() {
+        this.$bind('user', users.doc(this.$store.getters.LinkID)).then(user => {
+        this.user === user
+        /* eslint-disable no-console */
+        console.log(this.user.process_list[0].name)
+    })},
     methods:{
+        register(){
+      // users.doc(this.ID).set({
+      //           name:'วรัชญา',
+      //           ID:this.ID,
+      //           password:this.password,
+      //           process_list:[],
+      //           email:'',
+      //           lineID:'',
+      //           enroll:true,
+      //           queueRef:rtb.collection('department').doc('Out Patient Department')
+      //         })
+      this.$bind('user', users.doc(this.ID))
+      rtb.collection('user').doc(this.ID).get().then(doc => {
+          if (doc.exists) {
+            if(this.user.password == 'OP'){
+              users.doc(this.ID).set({
+                name:'วรัชญา',
+                ID:this.ID,
+                password:this.birthDay,
+                process_list:[],
+                email:'',
+                lineID:'',
+                enroll:true,
+                queueRef:rtb.collection('department').doc('Out Patient Department')
+                
+              })
+              this.out = 'finish'
+            }
+
+            else this.out = 'already have this account'
+          } 
+          else {
+
+            users.doc(this.ID).set({
+              name:'วรัชญา',
+              ID:this.ID,
+              password:this.birthDay,
+              process_list:[],
+              email:'',
+              lineID:'',
+              enroll:false,
+              queueRef:rtb.collection('process').doc('registeration')
+            })              
+          }
+      })
+      
+
+      // register()
+    },
         checkID: function() {
             if(this.ID.length==13){
                 this.isIDcomplete = true;
