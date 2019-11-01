@@ -2,6 +2,9 @@ import App from './App.vue'
 import Routes from './routes'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import './firebase';
+import {firestorePlugin } from 'vuefire'
+Vue.use(firestorePlugin)
 
 Vue.use(VueRouter);
 

@@ -1,7 +1,7 @@
 <template>
 <div>
     <img src = "../assets/logo.png" class = "logo">
-    <router-link to = "/QueueGlance"><button class = "pressQueue">Register</button></router-link>
+    <router-link to = "/Regis"><button class = "pressQueue">Register</button></router-link>
     <router-link to = "/Login"><button class = "backToQueue">Login</button></router-link>
 </div>
 </template>

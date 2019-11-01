@@ -1,3 +1,4 @@
+
 <template>
 <div class="big">
   <p>ใส่ข้อมูลเพื่อกลับไปที่คิว</p>
@@ -6,12 +7,19 @@
     <p  :class = "{wrongID: !isIDtrue, trueID: isIDtrue}">คุณใส่หมายเลขบัตรประชาชนผิด</p>
     <input type="text" id="lname" name="Brith day" placeholder="กรอกวันเกิด (วว/ดด/ปป)" v-model = "onChangeBirthday">
     <p :class = "{wrongBirthDay: !isBirthdayTrue, trueBirthDay: isBirthdayTrue}">กรุณาใส่วันเกิดในรูปแบบ วว/ดด/ปป</p>
-    <router-link :class = "{disable: !isID || !isBirthday}" to="/UIque"><input type="submit" value="กลับไปที่คิว" v-on:click = "checkID"></router-link>
+    <div v-if = "check"><router-link :class = "{disable: !isID || !isBirthday}" to="/UIque"><input type="submit" value="กลับไปที่คิว" @click="$emit('eventID', 'Foo')"></router-link></div>
+    <div v-if = "!check"><router-link :class = "{disable: !isID || !isBirthday}" to="/Login"><input type="submit" value="กลับไปที่คิว" ></router-link></div>
   </form>
 </div>
 </template>
 
 <script>
+import { rtb } from "../firebase";
+const users = rtb.collection('user')
+// const departments = rtb.collection('department')
+// const processes = rtb.collection('process')
+// var f
+// 1101700285065
 export default {
     name:'Regis',
     data: function() {
@@ -23,12 +31,21 @@ export default {
             birthDay: '',
             isBirthdayTrue: true,
             isBirthdayComplete: false,
-            isBirthday: false
+            isBirthday: false,
+            check:0,
+            out:"",
+            b : rtb.collection("user").doc("1101700285065").process,
+            queue : rtb.collection("wtf").doc("queueList"),
+            user : 'Nan',
+            process : '',
+            q_run : '',
+            p : 0
         }  
     },
     methods:{
         checkID: function() {
             if(this.ID.length==13){
+                this.login();
                 this.isIDcomplete = true;
                 var IDlist = this.ID.split('');
                 IDlist = IDlist.reverse();
@@ -71,6 +88,7 @@ export default {
                     if(parseInt(birthDayList[0]) > 31){
                         this.isBirthdayTrue = false;
                     }
+                    this.login();
                 }
                 else {
                     this.isBirthdayTrue = false;
@@ -84,6 +102,28 @@ export default {
                 this.isBirthdayComplete = false;
                 this.isBirthdayTrue = false;
             }
+        },
+        login(){
+            this.$bind('user', users.doc(this.ID))
+            rtb.collection('user').doc(this.ID).get().then(doc => {
+                /* eslint-disable no-console */
+                console.log('haha');
+                if (doc.exists) {
+                    if(this.user.password == this.birthDay){
+                        this.check  = 1
+                        this.out = 'log in success'
+                        // this.out = this.user.process_list[this.user.process_list.length-1].type
+                    }
+                    else{
+                    this.out = 'wrong password '+this.user.password
+                    this.check  = 0
+                    }
+                } else {
+                    this.out = 'not have this user ID'
+                    this.check = 0
+                }
+                console.log(this.out)
+            })
         }
     },
     computed: {
@@ -93,6 +133,7 @@ export default {
             },
             set(newValue){
                 this.ID = newValue;
+                this.$store.commit('IDMutation', newValue); 
                 this.checkID();
                 this.isID = this.isIDtrue && this.isIDcomplete;
             }

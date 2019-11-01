@@ -27,6 +27,7 @@
 
   </div>
   </div>
+  <p>{{ $store.getters.LinkID }}</p>
   <router-link to = "/DrugPage"><button type="button" style = "font-size: 4vw; margin-top:20%;">สถานที่รับยา</button></router-link>
   
 </div>
@@ -44,7 +45,8 @@ export default {
       coutUp: '00:25',
       processes: [ {id:1,process:'ตรวจ',status:'Finished', isFinished: true}
       ,{id:2,process:'จ่ายเงิน',status:'Finished', isFinished: true}
-      ,{id:3,process:'รับยา',status:'Waiting', isFinished: false}]
+      ,{id:3,process:'รับยา',status:'Waiting', isFinished: false}],
+      ID: this.shared.userCount
     }
   }
 }
