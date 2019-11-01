@@ -9,37 +9,52 @@
             <div>
             <input type="text" placeholder="กรอกอีเมล" v-model = "onChangeEmail">
             </div>
-            <router-link to = "/UIque"><button :class = "{disable: !isEmail}">รับคิว</button></router-link>
+            <router-link to = "/UIque"><button :class = "{disable: !isEmail}" @click="sendEmail">รับคิว</button></router-link>
         </form>
     </center>
     </div> 
 </template>
 
 <script>
+ /* eslint-disable no-console */
+import { rtb } from "../firebase";
+const users = rtb.collection('user')
+
 export default {
     name: 'Gmail',
     data: function() {
         return {
-        email: '',
-        isEmail: false
+        user: '',
+        Email: '',
+        isEmail: false,
         }
     },
+    created() {
+        this.$bind('user', users.doc(this.$store.getters.LinkID)).then(user => {
+        this.user === user
+       
+    })},
     methods: {
         isEmailValid: function() {
-                if (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(this.email))
+                if (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(this.Email))
             {
                 return (true)
             }
                 return (false)
-            }
+            },
+        sendEmail: function() {
+            this.user.email = this.Email
+            this.user.queueRef = rtb.collection('department').doc('Out Patient Department')
+            users.doc(this.user.ID).set(this.user)
+        }
     },
     computed: {
         onChangeEmail: {
             get(){
-                return this.email;
+                return this.Email;
             },
             set(newValue){
-                this.email = newValue;
+                this.Email = newValue;
                 this.isEmail = this.isEmailValid();
             }
         }

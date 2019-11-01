@@ -7,17 +7,38 @@
     <center>
         <form>
             <div>
-            <input type="text" placeholder="กรอกไอดีไลน์">
+            <input type="text" placeholder="กรอกไอดีไลน์" v-model = "Line">
             </div>
-            <router-link to="/UIque"><button>รับคิว</button></router-link>
+            <router-link to="/UIque"><button @click = "setLine">รับคิว</button></router-link>
         </form>
     </center>
     </div> 
 </template>
 
 <script>
+import { rtb } from "../firebase";
+const users = rtb.collection('user')
 export default {
-    name: 'Line'
+    name: 'Line',
+    data: function() {
+        return {
+        user: '',
+        Line: ''
+        }
+    },
+    created() {
+        this.$bind('user', users.doc(this.$store.getters.LinkID)).then(user => {
+        this.user === user
+        /* eslint-disable no-console */
+        console.log(this.user.process_list[0].name)
+    })},
+    methods: {
+        setLine: function() {
+            this.user.line = this.Line
+            this.user.queueRef = rtb.collection('department').doc('Out Patient Department')
+            users.doc(this.user.ID).set(this.user)
+        }
+    }
 }
 </script>
 
