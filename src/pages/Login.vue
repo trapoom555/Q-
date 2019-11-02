@@ -7,7 +7,7 @@
     <p  :class = "{wrongID: !isIDtrue, trueID: isIDtrue}">คุณใส่หมายเลขบัตรประชาชนผิด</p>
     <input type="text" id="lname" name="Brith day" placeholder="กรอกวันเกิด (วว/ดด/ปป)" v-model = "onChangeBirthday">
     <p :class = "{wrongBirthDay: !isBirthdayTrue, trueBirthDay: isBirthdayTrue}">กรุณาใส่วันเกิดในรูปแบบ วว/ดด/ปป</p>
-    <div v-if = "check"><router-link :class = "{disable: !isID || !isBirthday}" to="/UIque"><input type="submit" value="กลับไปที่คิว" @click="$emit('eventID', 'Foo')"></router-link></div>
+    <div v-if = "check"><router-link :class = "{disable: !isID || !isBirthday}" to="/QueueGlance"><input type="submit" value="กลับไปที่คิว"></router-link></div>
     <div v-if = "!check"><router-link :class = "{disable: !isID || !isBirthday}" to="/Login"><input type="submit" value="กลับไปที่คิว" ></router-link></div>
   </form>
 </div>
@@ -24,11 +24,11 @@ export default {
     name:'Regis',
     data: function() {
         return{
-            ID: '1101700285065',
+            ID: '1509966059869',
             isIDtrue: true,
             isIDcomplete: false,
             isID: false,
-            birthDay: '01/08/43',
+            birthDay: '/05/43',
             isBirthdayTrue: true,
             isBirthdayComplete: false,
             isBirthday: false,
@@ -42,6 +42,12 @@ export default {
             p : 0
         }  
     },
+    created() {
+        this.$bind('user', users.doc(this.$store.getters.LinkID)).then(user => {
+        this.user === user
+        /* eslint-disable no-console */
+        console.log(this.user.process_list[0].name)
+    })},
     methods:{
         checkID: function() {
             if(this.ID.length==13){
