@@ -2,11 +2,12 @@
 <div class="big">
   <p class = "topic">ใส่ข้อมูลเพื่อกดคิว</p>
   <form action="/action_page.php"> 
+    <input type="text" id="fname" name="ID" placeholder="กรอกชื่อ" v-model = "onChangeName">
     <input type="text" id="fname" name="ID" placeholder="กรอกเลขบัตรประชาชน" v-model = "onChangeID">
     <p  :class = "{wrongID: !isIDtrue, trueID: isIDtrue}">คุณใส่หมายเลขบัตรประชาชนผิด</p>
     <input type="text" id="lname" name="Brith day" placeholder="กรอกวันเกิด (วว/ดด/ปป)" v-model = "onChangeBirthday">
     <p :class = "{wrongBirthDay: !isBirthdayTrue, trueBirthDay: isBirthdayTrue}">กรุณาใส่วันเกิดในรูปแบบ วว/ดด/ปป</p>
-    <router-link :class = "{disable: !isID || !isBirthday}" to="/Notification"><input type="submit" value="ต่อไป" v-on:click = "register"></router-link>
+    <router-link :class = "{disable: !isID || !isBirthday}" to="/Notification"><input type="submit" value="ต่อไป"></router-link>
   </form>
 </div>
 </template>
@@ -19,11 +20,12 @@ export default {
     data: function() {
         return{
             user: '',
-            ID: '1509966059869',
+            ID: '',
+            name: '',
             isIDtrue: true,
             isIDcomplete: false,
             isID: false,
-            birthDay: '28/05/43',
+            birthDay: '',
             isBirthdayTrue: true,
             isBirthdayComplete: false,
             isBirthday: false,
@@ -34,58 +36,8 @@ export default {
         this.$bind('user', users.doc(this.$store.getters.LinkID)).then(user => {
         this.user === user
         /* eslint-disable no-console */
-        console.log(this.user.process_list[0].name)
     })},
     methods:{
-        register(){
-      // users.doc(this.ID).set({
-      //           name:'วรัชญา',
-      //           ID:this.ID,
-      //           password:this.password,
-      //           process_list:[],
-      //           email:'',
-      //           lineID:'',
-      //           enroll:true,
-      //           queueRef:rtb.collection('department').doc('Out Patient Department')
-      //         })
-      this.$bind('user', users.doc(this.ID))
-      rtb.collection('user').doc(this.ID).get().then(doc => {
-          if (doc.exists) {
-            if(this.user.password == 'OP'){
-              users.doc(this.ID).set({
-                name:'วรัชญา',
-                ID:this.ID,
-                password:this.birthDay,
-                process_list:[],
-                email:'',
-                lineID:'',
-                enroll:true,
-                queueRef:rtb.collection('department').doc('Out Patient Department')
-                
-              })
-              this.out = 'finish'
-            }
-
-            else this.out = 'already have this account'
-          } 
-          else {
-
-            users.doc(this.ID).set({
-              name:'วรัชญา',
-              ID:this.ID,
-              password:this.birthDay,
-              process_list:[],
-              email:'',
-              lineID:'',
-              enroll:false,
-              queueRef:rtb.collection('process').doc('registeration')
-            })              
-          }
-      })
-      
-
-      // register()
-    },
         checkID: function() {
             if(this.ID.length==13){
                 this.isIDcomplete = true;
@@ -152,6 +104,7 @@ export default {
             },
             set(newValue){
                 this.ID = newValue;
+                this.$store.commit('IDMutation', newValue); 
                 this.checkID();
                 this.isID = this.isIDtrue && this.isIDcomplete;
             }
@@ -163,7 +116,17 @@ export default {
             set(newValue){
                 this.birthDay = newValue;
                 this.checkBirthDay();
+                this.$store.commit('BirthdayMutation', newValue); 
                 this.isBirthday = this.isBirthdayTrue && this.isBirthdayComplete;
+            }
+        },
+        onChangeName: {
+            get(){
+                return this.name;
+            },
+            set(newValue){
+                this.name = newValue;
+                this.$store.commit('NameMutation', newValue)
             }
         }
     }
@@ -173,7 +136,7 @@ export default {
 
 <style>
 .big{
-    margin-top: 40%;
+    margin-top: 20%;
 }
 .topic {
     font-size:5vw;
@@ -198,7 +161,7 @@ input[type=submit] {
    background: linear-gradient(281.54deg, #7FBCEB -3.52%, rgba(255, 255, 255, 0) 114.63%), #92E0D0; 
   color:black;
   padding: 14px 20px;
-  margin-top: 20%;
+  margin-top: 5%;
   border: none;
   border-radius: 4px;
   cursor: pointer;

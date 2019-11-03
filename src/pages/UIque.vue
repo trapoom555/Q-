@@ -5,31 +5,30 @@
     <div class="box-circle">
       <div class="box-item" style="color:#737171;margin-top:20%; font-size: 4vw;">เหลืออีก :</div>
       <div v-if="user.process_list.length != 0">
-      <div class="box-item" style="font-size:28px; display:inline-block;" >{{user.process_list[user.process_list.length-1].status-user.queueRef.q_call + " "}}</div>
+      <div class="box-item" style="font-size:28px; display:inline-block;" >{{(user.process_list[user.process_list.length-1].status-user.queueRef.q_call) > 0 ? user.process_list[user.process_list.length-1].status-user.queueRef.q_call : 0+ " "}}</div>
       <div class="box-item" style="display:inline-block; font-size: 5vw"> คิว</div>
       </div>
     </div>
     <div class="box-circle" style="border-bottom:0;padding-top:10%;">
       <div class="box-item" style="font-size:23px; display:inline-block;">{{coutUp+" "}}</div>
-      <div class="box-item" style="display:inline-block; font-size: 3.5vw;"> hr</div>
+      <div class="box-item" style="display:inline-block ;"> hr</div>
     </div>
     </div>
   </div>
-  <div style = "margin-top:10%;">
+  <div class="name-user" style="">ชื่อ {{user.name}}</div>
+  <div class="name-user" style="">คิวที่ {{user.process_list[user.process_list.length-1].status}}</div>
   <div class="task" style="padding-left:20px; font-size: 4vw;">
     กระบวนการ
   </div>
   <div class="task" style="width:30%; max-width:150px;text-align:center; font-size: 4vw;">
   สถานะ
   </div><br>
-  <div v-for = "e in this.user.process_list" :key="e.name" style="padding-left:20px; font-size: 4.2vw;">
-    <div :class = "{grey: e.isFinished}" style = "text-align:justify; width: 60%; margin:auto;"><br><span>{{e.name}}</span><span style = "float:right">{{e.status}}</span><br></div>
+  <div v-for = "e in this.user.process_list" :key="e.name" style="padding-left:0px; font-size: 4.2vw;">
+    <div :class = "{grey: !Number.isInteger(e.status)}" style = "text-align:justify; width: 60%; margin:auto; margin-left:17%"><br><span>{{e.name}}</span><span style = "float:right">{{Number.isInteger(e.status) ? e.status == 0 ? "ถึงคิวของท่านแล้ว" :"รอ" : "เสร็จสิ้น"}}</span><br></div>
   </div>
   <div class="task-data" style="width:30%; max-width:150px;text-align:center;border-right:0; font-size: 4vw;">
 
   </div>
-  </div>
-  <p>{{user.name}}</p>
   <!-- <p>{{ $store.getters.LinkID }}</p> -->
   <router-link to = "/DrugPage"><button type="button" style = "font-size: 4vw; margin-top:20%;">สถานที่รับยา</button></router-link>
   
@@ -40,26 +39,97 @@
 
 
 <script>
+     /* eslint-disable no-console */
 import { rtb } from "../firebase";
 const users = rtb.collection('user')
+const departments = rtb.collection('department')
+const processes = rtb.collection('process')
+var f;
 export default {
   name: 'UIque',
   data: function() {
     return {
       user: '',
       coutUp: '00:25',
-      // processes: [ {id:1,process:'ตรวจ',status:'Finished', isFinished: true}
-      // ,{id:2,process:'จ่ายเงิน',status:'Finished', isFinished: true}
-      // ,{id:3,process:'รับยา',status:'Waiting', isFinished: false}],
-      check: false
+      check: false,
+      process: '',
+        department: '',
     }
   },
   created() {
     this.$bind('user', users.doc(this.$store.getters.LinkID)).then(user => {
         this.user === user
-        /* eslint-disable no-console */
+        console.log(this.$store.getters.LinkID)
+        console.log(user)
+        if(this.user.process_list.length == 0){
+          this.getQueue()
+        }
+   
         console.log(this.user.process_list[0].name)
- })
+    })
+  },
+  methods: {
+    getQueue() {
+            console.log('getget')
+            this.out = 1234
+      if(this.user.enroll == true){
+        console.log('truetrue')
+        departments.doc('Out Patient Department').get().then(doc => {
+          this.out = 789
+          if (doc.exists) {
+              console.log('exist')
+              this.$bind('department', departments.doc('Out Patient Department')).then(department => {
+                this.process === department
+                f = doc.data()
+                f.q_run+=1
+
+                this.out = 555
+                users.doc(this.user.ID).set({
+                  process_list: [{
+                    type : 'department',
+                    name : 'Out Patient Department',
+                    status : f.q_run
+                  }]
+                }, { merge: true });
+                f.q_list.push({userID:this.user.ID,queue:f.q_run})
+                departments.doc('Out Patient Department').set(f).then(() => {
+                  this.out = f.q_run
+                })
+              })
+          }
+        })
+      }
+      else{
+        processes.doc('registeration').get().then(doc => {
+          this.out = 666666
+          console.log('eiei')
+          if (doc.exists) {
+            this.out = 555555555
+            console.log('jaaj')
+              this.$bind('process', processes.doc('registeration')).then(process => {
+                this.process === process
+                f = doc.data()
+                f.q_run+=1
+                console.log('ahah')
+                this.out = 555
+                users.doc(this.user.ID).set({
+                  process_list: [{
+                    type : 'process',
+                    name : 'registeration',
+                    status : f.q_run
+                  }]
+                }, { merge: true });
+                f.q_list.push({userID:this.user.ID,queue:f.q_run})
+                processes.doc('registeration').set(f).then(() => {
+                  this.out = f.q_run
+                })
+              })
+          }
+        })
+      }
+      
+    
+        }
   }
 }
 </script>
@@ -113,6 +183,15 @@ button{
   text-align:center;
   background-attachment: fixed;
   
+}
+.name-user{
+  background: #efeff5;
+  font-size: 4vw;
+  width: 50%;
+  display: inline-block;
+  padding: 3% 0 ;
+  margin: 0 0 ;
+  box-shadow: 0px 3px 3px #d0d0e1;
 }
 .bg-head{
   background: linear-gradient(310.03deg, #DD7ECE -15.01%, rgba(255, 255, 255, 0) 107.56%), #7FECEB;

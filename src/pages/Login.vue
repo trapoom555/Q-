@@ -7,8 +7,10 @@
     <p  :class = "{wrongID: !isIDtrue, trueID: isIDtrue}">คุณใส่หมายเลขบัตรประชาชนผิด</p>
     <input type="text" id="lname" name="Brith day" placeholder="กรอกวันเกิด (วว/ดด/ปป)" v-model = "onChangeBirthday">
     <p :class = "{wrongBirthDay: !isBirthdayTrue, trueBirthDay: isBirthdayTrue}">กรุณาใส่วันเกิดในรูปแบบ วว/ดด/ปป</p>
-    <div v-if = "check"><router-link :class = "{disable: !isID || !isBirthday}" to="/QueueGlance"><input type="submit" value="กลับไปที่คิว"></router-link></div>
-    <div v-if = "!check"><router-link :class = "{disable: !isID || !isBirthday}" to="/Login"><input type="submit" value="กลับไปที่คิว" ></router-link></div>
+    <p  :class = "{wrongID: !isPasstruetrue, trueID: isPasstruetrue}">คุณ เลขบัตรประชาชน หรือ วันเกิด ผิด</p>
+    <div v-if = "vif1"><router-link :class = "{disable: (!isID || !isBirthday)}" to="/QueueGlance"><input type="submit" value="Login"></router-link></div>
+    <div v-if = "vif2"><router-link :class = "{disable: (!isID || !isBirthday)}" to="/Login"><input type="submit" value="Login" @click="setIsPasstrue"></router-link></div>
+    <div v-if = "vif3"><router-link :class = "{disable: (!isID || !isBirthday)}" to="/UIque"><input type="submit" value="Login" ></router-link></div>
   </form>
 </div>
 </template>
@@ -28,7 +30,7 @@ export default {
             isIDtrue: true,
             isIDcomplete: false,
             isID: false,
-            birthDay: '/05/43',
+            birthDay: '28/05/43',
             isBirthdayTrue: true,
             isBirthdayComplete: false,
             isBirthday: false,
@@ -39,7 +41,12 @@ export default {
             user : 'Nan',
             process : '',
             q_run : '',
-            p : 0
+            p : 0,
+            vif1: false,
+            vif2: true,
+            vif3: false,
+            isPasstrue: true,
+            isPasstruetrue: true,
         }  
     },
     created() {
@@ -49,8 +56,27 @@ export default {
         console.log(this.user.process_list[0].name)
     })},
     methods:{
+        setIsPasstrue: function() {
+            if(!this.isPasstrue){
+                this.isPasstruetrue = false
+            }
+        },
+        vif1Method: function() {
+            this.vif1 = this.check && !this.user.process_list.length
+        },
+        vif2Method: function() {
+            this.vif2 = !this.check
+        },
+        vif3Method: function() {
+            this.vif3 = this.check && this.user.process_list.length
+        },
+        checkvif: function() {
+            this.vif1Method()
+            this.vif2Method()
+            this.vif3Method()
+        },
         checkID: function() {
-            if(this.ID.length==13){
+            if(this.ID.length == 13){
                 this.login();
                 this.isIDcomplete = true;
                 var IDlist = this.ID.split('');
@@ -123,6 +149,7 @@ export default {
                     else{
                     this.out = 'wrong password '+this.user.password
                     this.check  = 0
+                    this.isPasstrue = false
                     }
                 } else {
                     this.out = 'not have this user ID'
@@ -142,6 +169,8 @@ export default {
                 this.$store.commit('IDMutation', newValue); 
                 this.checkID();
                 this.isID = this.isIDtrue && this.isIDcomplete;
+                this.checkvif();
+                this.isPasstruetrue = true
             }
         },
         onChangeBirthday:{
@@ -152,6 +181,8 @@ export default {
                 this.birthDay = newValue;
                 this.checkBirthDay();
                 this.isBirthday = this.isBirthdayTrue && this.isBirthdayComplete;
+                this.checkvif();
+                this.isPasstruetrue = true
             }
         }
     }

@@ -9,7 +9,7 @@
             <div>
             <input type="text" placeholder="กรอกอีเมล" v-model = "onChangeEmail">
             </div>
-            <router-link to = "/UIque"><button :class = "{disable: !isEmail}" @click="sendEmail">รับคิว</button></router-link>
+            <router-link to = "/QueueGlance"><button :class = "{disable: !isEmail}" @click="sendEmail">รับคิว</button></router-link>
         </form>
     </center>
     </div> 
@@ -44,7 +44,8 @@ export default {
             },
         sendEmail: function() {
             this.user.email = this.Email
-            this.user.queueRef = rtb.collection('department').doc('Out Patient Department')
+            if(this.user.enroll == true)this.user.queueRef = rtb.collection('department').doc('Out Patient Department')
+            else this.user.queueRef = rtb.collection('process').doc('registeration')
             users.doc(this.user.ID).set(this.user)
         }
     },

@@ -9,7 +9,7 @@
             <div>
             <input type="text" placeholder="กรอกไอดีไลน์" v-model = "Line">
             </div>
-            <router-link to="/UIque"><button @click = "setLine">รับคิว</button></router-link>
+            <router-link to="/QueueGlance"><button @click = "setLine">รับคิว</button></router-link>
         </form>
     </center>
     </div> 
@@ -35,7 +35,8 @@ export default {
     methods: {
         setLine: function() {
             this.user.line = this.Line
-            this.user.queueRef = rtb.collection('department').doc('Out Patient Department')
+            if(this.user.enroll == true)this.user.queueRef = rtb.collection('department').doc('Out Patient Department')
+            else this.user.queueRef = rtb.collection('process').doc('registeration')
             users.doc(this.user.ID).set(this.user)
         }
     }
