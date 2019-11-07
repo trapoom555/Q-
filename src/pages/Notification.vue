@@ -46,6 +46,7 @@ export default {
                 email:'',
                 lineID:'',
                 enroll:true,
+                waitConfirm : false,
                 queueRef:rtb.collection('department').doc('Out Patient Department')
                 
               })
@@ -61,6 +62,7 @@ export default {
               ID:this.ID,
               password:this.birthDay,
               process_list:[],
+              waitConfirm : false,
               email:'',
               lineID:'',
               enroll:false,
