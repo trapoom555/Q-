@@ -86,12 +86,12 @@ export default {
         departments.doc('Out Patient Department').get().then(doc => {
           this.out = 789
           if (doc.exists) {
-            console.log('exist')
+            
             this.$bind('department', departments.doc('Out Patient Department')).then(department => {
               this.process === department
               f = doc.data()
               f.q_run+=1
-
+              console.log(f)
               this.out = 555
               users.doc(this.user.ID).set({
                 process_list: [{
@@ -112,30 +112,29 @@ export default {
       else{
         processes.doc('registeration').get().then(doc => {
           this.out = 666666
-          console.log('eiei')
           if (doc.exists) {
             this.out = 555555555
-            // console.log('jaaj')
               this.$bind('process', processes.doc('registeration')).then(process => {
                 this.process === process
                 f = doc.data()
                 f.q_run+=1
-                console.log('ahah')
+
                 this.out = 555
                 users.doc(this.user.ID).set({
                   process_list: [{
                     type : 'process',
                     name : 'registeration',
                     status : f.q_run
-                  }]
+                  }],
+                  queue : f.q_run
                 }, { merge: true });
-                f.q_list.push({userID:this.user.ID,queue:f.q_run})
+                f.q_list.push({userID:this.ID,queue:f.q_run})
                 processes.doc('registeration').set(f).then(() => {
                   this.out = f.q_run
                 })
               })
-            }
-          })
+          }
+        })
         }
       },
       confirm(){
