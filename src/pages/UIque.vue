@@ -79,32 +79,33 @@ export default {
   },
   methods: {
     getQueue() {
-            console.log('getget')
-            this.out = 1234
+      console.log('getget')
+      this.out = 1234
       if(this.user.enroll == true){
         console.log('truetrue')
         departments.doc('Out Patient Department').get().then(doc => {
           this.out = 789
           if (doc.exists) {
-              console.log('exist')
-              this.$bind('department', departments.doc('Out Patient Department')).then(department => {
-                this.process === department
-                f = doc.data()
-                f.q_run+=1
+            console.log('exist')
+            this.$bind('department', departments.doc('Out Patient Department')).then(department => {
+              this.process === department
+              f = doc.data()
+              f.q_run+=1
 
-                this.out = 555
-                users.doc(this.user.ID).set({
-                  process_list: [{
-                    type : 'department',
-                    name : 'Out Patient Department',
-                    status : f.q_run
-                  }]
-                }, { merge: true });
-                f.q_list.push({userID:this.user.ID,queue:f.q_run})
-                departments.doc('Out Patient Department').set(f).then(() => {
-                  this.out = f.q_run
-                })
+              this.out = 555
+              users.doc(this.user.ID).set({
+                process_list: [{
+                  type : 'department',
+                  name : 'Out Patient Department',
+                  status : f.q_run
+                }],
+                queue : f.q_run
+              }, { merge: true });
+              f.q_list.push({userID:this.user.ID,queue:f.q_run})
+              departments.doc('Out Patient Department').set(f).then(() => {
+                this.out = f.q_run
               })
+            })
           }
         })
       }
@@ -114,7 +115,7 @@ export default {
           console.log('eiei')
           if (doc.exists) {
             this.out = 555555555
-            console.log('jaaj')
+            // console.log('jaaj')
               this.$bind('process', processes.doc('registeration')).then(process => {
                 this.process === process
                 f = doc.data()
@@ -133,12 +134,10 @@ export default {
                   this.out = f.q_run
                 })
               })
-          }
-        })
-      }
-      
-    
-        },
+            }
+          })
+        }
+      },
       confirm(){
       temp = this.user.process_list[this.user.process_list.length-1]
       this.out = temp
@@ -156,6 +155,7 @@ export default {
             this.user.process_list[this.user.process_list.length - 1].status = f.q_run
             this.user.waitConfirm = false
             this.user.queueRef =  rtb.collection(temp.type).doc(temp.name)
+            this.user.queue = f.q_run
             users.doc(this.user.ID).set(this.user)
           } else {
               this.out = 'not have this user ID'

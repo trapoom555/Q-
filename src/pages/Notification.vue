@@ -45,6 +45,7 @@ export default {
                 process_list:[],
                 email:'',
                 lineID:'',
+                queue:0,
                 enroll:true,
                 waitConfirm : false,
                 queueRef:rtb.collection('department').doc('Out Patient Department')
@@ -65,6 +66,7 @@ export default {
               waitConfirm : false,
               email:'',
               lineID:'',
+              queue:0,
               enroll:false,
               queueRef:rtb.collection('process').doc('registeration')
             })              
