@@ -32,7 +32,7 @@
   สถานะ
   </div><br>
   <div v-for = "e in this.user.process_list" :key="e.name" style="padding-left:0px; font-size: 4.2vw;">
-    <div :class = "{grey: !Number.isInteger(e.status)}" style = "text-align:justify; width: 60%; margin:auto; margin-left:17%"><br><span>{{e.name}}</span><span style = "float:right">{{Number.isInteger(e.status) ? e.status == 0 ? "ถึงคิวของท่านแล้ว" :"รอ" : "เสร็จสิ้น"}}</span><br></div>
+    <div :class = "{grey: !Number.isInteger(e.status)}" style = "text-align:justify; width: 60%; margin:auto; margin-left:17%"><br><span>{{e.name}}</span><span style = "float:right">{{e.status != 'pass' ? Number.parseInt(e.status) == 0 ? "ถึงคิวของท่านแล้ว" :"รอ" : "เสร็จสิ้น"}}</span><br></div>
   </div>
   <div class="task-data" style="width:30%; max-width:150px;text-align:center;border-right:0; font-size: 4vw;">
 
