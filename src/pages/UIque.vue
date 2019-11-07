@@ -10,7 +10,7 @@
       </div>
     </div>
     <div class="box-circle" style="border-bottom:0;padding-top:10%;">
-      <div class="box-item" style="font-size:23px; display:inline-block;">{{coutUp+" "}}</div>
+      <div class="box-item" style="font-size:23px; display:inline-block;">{{this.user.queueRef.est_time * (user.process_list[user.process_list.length-1].status-user.queueRef.q_call) +" "}}</div>
       <div class="box-item" style="display:inline-block ;"> hr</div>
     </div>
     </div>
@@ -53,7 +53,7 @@ export default {
       coutUp: '00:25',
       check: false,
       process: '',
-        department: '',
+      department: '',
     }
   },
   created() {

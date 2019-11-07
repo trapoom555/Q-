@@ -12,10 +12,11 @@ const config = {
     measurementId: "G-6BERML41SJ"
 }
 
+// const storage = firebaseApp.storage()
 const firebaseApp = firebase.initializeApp(config)
 
 const datab = firebaseApp.firestore()
 datab.settings({ timestampsInSnapshots: true })
 
-
+// export { storage }
 export const rtb = datab

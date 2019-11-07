@@ -5,7 +5,7 @@
     <p class = "topic">คิวปัจจุบัน:</p>
     <p class = "value">{{user.queueRef.q_run - user.queueRef.q_call + 1}} คิว</p>
     <p class = "topic">เวลาโดยประมาณ:</p>
-    <p class = "value">{{time}}</p>
+    <p class = "value">{{(this.user.queueRef.est_time * (user.process_list[user.process_list.length-1].status-user.queueRef.q_call + 1))}}</p>
     <router-link to="/UIque"><button style = "font-size: 4.5vw">กดคิว</button></router-link>
 </div>
 </div>

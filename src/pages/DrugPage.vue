@@ -5,7 +5,7 @@
         <div class="box-text" style="width :20%;"> ห้องรับยา</div>
 
             <div class="pictur-room" style="text-align:center;">
-                <img class = "pictureRoom" src="../assets/room.jpg">
+                <!-- <img class = "pictureRoom" v-bind:src="UrlPath['i']"> -->
             </div>
 </div>
             <div class="text-room-topic" style="">สถานที่ :</div>
@@ -24,13 +24,20 @@
     
 </template>
 <script>
+// import { storage } from '../firebase';
+
 export default {
     name : 'DrugPage',
     data: function() {
         return {
+            Pic_name: 'X-ray',
+            UrlPath: 'NULL',
             place: "อาคารสุเมธ"
         }
-    }
+    },
+    // created() {
+    //         this.UrlPath = storage.ref('Picture/X-ray.jpg').getDownloadURL();
+    // }
 }
 </script>
 <style>
