@@ -24,7 +24,7 @@
     </div>
   </div>
   <div class="name-user" style="">ชื่อ {{user.name}}</div>
-  <div class="name-user" style="">คิวที่ {{user.process_list[user.process_list.length-1].status}}</div>
+  <div class="name-user" style="">คิวที่ {{user.queue}}</div>
   <div class="task" style="padding-left:20px; font-size: 4vw;">
     กระบวนการ
   </div>
