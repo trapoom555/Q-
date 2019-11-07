@@ -70,8 +70,8 @@ export default {
   },
   methods: {
     getQueue() {
-            console.log('getget')
-            this.out = 1234
+      console.log('getget')
+      this.out = 1234
       if(this.user.enroll == true){
         console.log('truetrue')
         departments.doc('Out Patient Department').get().then(doc => {
@@ -89,7 +89,8 @@ export default {
                     type : 'department',
                     name : 'Out Patient Department',
                     status : f.q_run
-                  }]
+                  }],
+                  queue : f.q_run
                 }, { merge: true });
                 f.q_list.push({userID:this.user.ID,queue:f.q_run})
                 departments.doc('Out Patient Department').set(f).then(() => {
@@ -127,9 +128,7 @@ export default {
           }
         })
       }
-      
-    
-        }
+    }
   }
 }
 </script>
