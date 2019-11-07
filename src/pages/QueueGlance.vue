@@ -5,7 +5,7 @@
     <p class = "topic">คิวปัจจุบัน:</p>
     <p class = "value">{{user.queueRef.q_run - user.queueRef.q_call + 1}} คิว</p>
     <p class = "topic">เวลาโดยประมาณ:</p>
-    <p class = "value">{{(this.user.queueRef.est_time * (user.process_list[user.process_list.length-1].status-user.queueRef.q_call + 1))}}</p>
+    <p class = "value">{{parseInt((user.queueRef.est_time * (user.queueRef.q_run-user.queueRef.q_call + 1)) / 60) + " นาที : "}}{{parseInt((user.queueRef.est_time * (user.queueRef.q_run-user.queueRef.q_call + 1)) % 60) + " วินาที "}}</p>
     <router-link to="/UIque"><button style = "font-size: 4.5vw">กดคิว</button></router-link>
 </div>
 </div>
@@ -29,6 +29,7 @@ export default {
         this.$bind('user', users.doc(this.$store.getters.LinkID)).then(user => {
         this.user === user
         /* eslint-disable no-console */
+        console.log(user.queueRef.est_time)
     })},
 }
 </script>
