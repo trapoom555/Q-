@@ -128,7 +128,7 @@ export default {
                   }],
                   queue : f.q_run
                 }, { merge: true });
-                f.q_list.push({userID:this.ID,queue:f.q_run})
+                f.q_list.push({userID:this.user.ID,queue:f.q_run})
                 processes.doc('registeration').set(f).then(() => {
                   this.out = f.q_run
                 })
