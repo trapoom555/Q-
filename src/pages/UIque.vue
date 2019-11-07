@@ -86,26 +86,26 @@ export default {
         departments.doc('Out Patient Department').get().then(doc => {
           this.out = 789
           if (doc.exists) {
-              console.log('exist')
-              this.$bind('department', departments.doc('Out Patient Department')).then(department => {
-                this.process === department
-                f = doc.data()
-                f.q_run+=1
+            console.log('exist')
+            this.$bind('department', departments.doc('Out Patient Department')).then(department => {
+              this.process === department
+              f = doc.data()
+              f.q_run+=1
 
-                this.out = 555
-                users.doc(this.user.ID).set({
-                  process_list: [{
-                    type : 'department',
-                    name : 'Out Patient Department',
-                    status : f.q_run
-                  }],
-                  queue : f.q_run
-                }, { merge: true });
-                f.q_list.push({userID:this.user.ID,queue:f.q_run})
-                departments.doc('Out Patient Department').set(f).then(() => {
-                  this.out = f.q_run
-                })
+              this.out = 555
+              users.doc(this.user.ID).set({
+                process_list: [{
+                  type : 'department',
+                  name : 'Out Patient Department',
+                  status : f.q_run
+                }],
+                queue : f.q_run
+              }, { merge: true });
+              f.q_list.push({userID:this.user.ID,queue:f.q_run})
+              departments.doc('Out Patient Department').set(f).then(() => {
+                this.out = f.q_run
               })
+            })
           }
         })
       }
@@ -134,14 +134,10 @@ export default {
                   this.out = f.q_run
                 })
               })
-          }
-        })
-      }
-<<<<<<< HEAD
-=======
-      
-    
-        },
+            }
+          })
+        }
+      },
       confirm(){
       temp = this.user.process_list[this.user.process_list.length-1]
       this.out = temp
@@ -186,7 +182,6 @@ export default {
           }
         }) 
       }
->>>>>>> 680e916f9b87025e3315c402e62c3265fd3db17c
     }
   }
 }
