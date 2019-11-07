@@ -10,8 +10,16 @@
       </div>
     </div>
     <div class="box-circle" style="border-bottom:0;padding-top:10%;">
-      <div class="box-item" style="font-size:23px; display:inline-block;">{{this.user.queueRef.est_time * (user.process_list[user.process_list.length-1].status-user.queueRef.q_call) +" "}}</div>
-      <div class="box-item" style="display:inline-block ;"> hr</div>
+      <button v-if = "user.waitConfirm" @click="confirm">ยืนยันคิว</button>
+      <div  v-if = "!user.waitConfirm">
+      <div>
+        <div class="box-item" style="display:inline ;">นาที</div>
+        <div class="box-item" style="display:inline; margin-left:10%;">วินาที</div>
+      </div>
+      <div class="box-item" style="font-size:23px; display:inline-block;">{{parseInt(this.user.queueRef.est_time * (user.process_list[user.process_list.length-1].status-user.queueRef.q_call)/ 60)}}</div>
+      <div class="box-item" style="font-size:23px; display:inline-block;">:</div>
+      <div class="box-item" style="font-size:23px; display:inline-block;">{{parseInt(this.user.queueRef.est_time * (user.process_list[user.process_list.length-1].status-user.queueRef.q_call) % 60) +" "}}</div>
+    </div>
     </div>
     </div>
   </div>
@@ -45,6 +53,7 @@ const users = rtb.collection('user')
 const departments = rtb.collection('department')
 const processes = rtb.collection('process')
 var f;
+var temp;
 export default {
   name: 'UIque',
   data: function() {
@@ -129,7 +138,52 @@ export default {
       }
       
     
-        }
+        },
+      confirm(){
+      temp = this.user.process_list[this.user.process_list.length-1]
+      this.out = temp
+      
+      if(temp.type == 'department' || temp.type == 'process'){
+        rtb.collection(temp.type).doc(temp.name).get().then(doc => {
+          if (doc.exists) {
+            f = doc.data()
+            f.q_run+=1
+            f.q_list.push({userID:this.user.ID,queue:f.q_run})
+            rtb.collection(temp.type).doc(temp.name).update({
+              q_run : f.q_run,
+              q_list : f.q_list
+            })
+            this.user.process_list[this.user.process_list.length - 1].status = f.q_run
+            this.user.waitConfirm = false
+            this.user.queueRef =  rtb.collection(temp.type).doc(temp.name)
+            users.doc(this.user.ID).set(this.user)
+          } else {
+              this.out = 'not have this user ID'
+              this.check = 0
+          }
+        }) 
+      }
+      else {
+        rtb.collection('department').doc(temp.type).collection('Doctors').doc(temp.name).get().then(doc => {
+         if (doc.exists) {
+            f = doc.data()
+            f.q_run+=1
+            f.q_list.push({userID:this.user.ID,queue:f.q_run})
+            rtb.collection('department').doc(temp.type).collection('Doctors').doc(temp.name).update({
+              q_run : f.q_run,
+              q_list : f.q_list
+            })
+            this.user.process_list[this.user.process_list.length - 1].status = f.q_run
+            this.user.waitConfirm = false
+            this.user.queueRef =  rtb.collection(temp.type).doc(temp.name)
+            users.doc(this.user.ID).set(this.user)
+          } else {
+              this.out = 'not have this user ID'
+              this.check = 0
+          }
+        }) 
+      }
+    }
   }
 }
 </script>
