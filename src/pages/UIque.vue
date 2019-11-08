@@ -83,11 +83,11 @@ export default {
       this.out = 1234
       if(this.user.enroll == true){
         console.log('truetrue')
-        departments.doc('Out Patient Department').get().then(doc => {
+        departments.doc('OPD').get().then(doc => {
           this.out = 789
           if (doc.exists) {
             
-            this.$bind('department', departments.doc('Out Patient Department')).then(department => {
+            this.$bind('department', departments.doc('OPD')).then(department => {
               this.process === department
               f = doc.data()
               f.q_run+=1
@@ -96,13 +96,13 @@ export default {
               users.doc(this.user.ID).set({
                 process_list: [{
                   type : 'department',
-                  name : 'Out Patient Department',
+                  name : 'OPD',
                   status : f.q_run
                 }],
                 queue : f.q_run
               }, { merge: true });
               f.q_list.push({userID:this.user.ID,queue:f.q_run})
-              departments.doc('Out Patient Department').set(f).then(() => {
+              departments.doc('OPD').set(f).then(() => {
                 this.out = f.q_run
               })
             })
