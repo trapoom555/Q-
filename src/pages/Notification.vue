@@ -22,14 +22,14 @@ export default {
         }
     },
     created() {
-        this.$bind('user', users.doc(this.$store.getters.LinkID)).then(user => {
+      this.$bind('user', users.doc(this.$store.getters.LinkID)).then(user => {
         this.user === user
         console.log(this.$store.getters.LinkID)
         this.ID = this.$store.getters.LinkID
         this.birthDay = this.$store.getters.LinkBirthday
         this.name = this.$store.getters.LinkName
         this.register();
-    });
+      });
     },
     methods: {
         register(){
