@@ -48,7 +48,7 @@ export default {
                 queue:0,
                 enroll:true,
                 waitConfirm : false,
-                queueRef:rtb.collection('department').doc('Out Patient Department')
+                queueRef:rtb.collection('department').doc('OPD')
                 
               })
               this.out = 'finish'

@@ -35,7 +35,7 @@ export default {
     methods: {
         setLine: function() {
             this.user.line = this.Line
-            if(this.user.enroll == true)this.user.queueRef = rtb.collection('department').doc('Out Patient Department')
+            if(this.user.enroll == true)this.user.queueRef = rtb.collection('department').doc('OPD')
             else this.user.queueRef = rtb.collection('process').doc('registeration')
             users.doc(this.user.ID).set(this.user)
         }
