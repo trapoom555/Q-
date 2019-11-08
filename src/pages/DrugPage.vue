@@ -1,8 +1,8 @@
 <template>
     <div class="body-back" style="padding-top:0%;">
 <div class = "gradient-background">
-        <div class="box-text-topic" style="border-right:1px solid gray;">รับยา</div>
-        <div class="box-text" style="width :20%;"> ห้องรับยา</div>
+        <div class="box-text-topic" style="border-right:1px solid gray;">{{action}}</div>
+        <div class="box-text" style="width :20%;">{{display}}</div>
 
             <div class="pictur-room" style="text-align:center;">
                 <img class = "pictureRoom" v-bind:src="UrlPath['i']">
@@ -37,22 +37,49 @@ export default {
             Pic_name: 'X-ray',
             UrlPath: 'NULL',
             place: "อาคารสุเมธ",
+            picSel: '',
+            action: '',
+            display: '',
             // user: ''
         }
     },
     created() {
-        this.UrlPath = storage.ref('Picture/รับยา.jpg').getDownloadURL();
         // this.$bind('user', users.doc(this.$store.getters.LinkID)).then(user => {
         // this.user === user
         
-            console.log(this.$store.getters.LinkID);
         users.doc(this.$store.getters.LinkID).get().then(doc=>{
             user = doc.data();
-            console.log(user);
-            console.log('wasczx');
-            
         })
+        console.log(user.process_list[user.process_list.length-1].name)
+        
+        this.picSel = user.process_list[user.process_list.length-1].name
+        this.UrlPath = storage.ref('Picture/' + this.picSel + '.jpg').getDownloadURL();
         /* eslint-disable no-console */
+        if(this.picSel == 'OPD'){
+            this.action = 'ตรวจ'
+            this.display = 'OPD'
+        }
+        else if(this.picSel == 'X-ray'){
+            this.action = 'X-ray'
+            this.display = 'ห้อง X-ray'
+        }
+        else if(this.picSel == 'ลงทะเบียนผู้ป่วย'){
+            this.action = 'ลงทะเบียนผู้ป่วย'
+            this.display = 'แผนกลงทะเบียนผู้ป่วยใหม่'
+        }
+        else if(this.picSel == 'ชำระเงิน'){
+            this.action = 'ชำระเงิน'
+            this.display = 'แผนกลงทะเบียนผู้ป่วยใหม่'
+        }
+        else if(this.picSel == 'รับยา'){
+            this.action = 'ชำระเงิน'
+            this.display = 'ห้องชำระเงิน'
+        }
+        else if(this.picSel == 'เจาะเลือด'){
+            this.action = 'เจาะเลือด'
+            this.display = 'ห้องเจาะเลือด'
+        }
+
     
     }
 }
@@ -87,7 +114,9 @@ export default {
 .box-text{
     width: 10%;
     display:inline-block;
+    text-align: left;
     margin: auto;
+    margin-left: 2%;
     vertical-align: -50%;
     font-size:4.5vw ;
     padding:0 1%;
