@@ -38,7 +38,7 @@
 
   </div>
   <!-- <p>{{ $store.getters.LinkID }}</p> -->
-  <router-link to = "/DrugPage"><button type="button" style = "font-size: 4vw; margin-top:20%;">สถานที่รับยา</button></router-link>
+  <router-link to = "/DrugPage"><button type="button" style = "font-size: 4vw; margin-top:20%;">ดูสถานที่ {{user.process_list[user.process_list.length-1].name}}</button></router-link>
   
 </div>
 
