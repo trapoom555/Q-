@@ -110,11 +110,11 @@ export default {
         })
       }
       else{
-        processes.doc('registeration').get().then(doc => {
+        processes.doc('ลงทะเบียนผู้ป่วย').get().then(doc => {
           this.out = 666666
           if (doc.exists) {
             this.out = 555555555
-              this.$bind('process', processes.doc('registeration')).then(process => {
+              this.$bind('process', processes.doc('ลงทะเบียนผู้ป่วย')).then(process => {
                 this.process === process
                 f = doc.data()
                 f.q_run+=1
@@ -123,13 +123,13 @@ export default {
                 users.doc(this.user.ID).set({
                   process_list: [{
                     type : 'process',
-                    name : 'registeration',
+                    name : 'ลงทะเบียนผู้ป่วย',
                     status : f.q_run
                   }],
                   queue : f.q_run
                 }, { merge: true });
                 f.q_list.push({userID:this.user.ID,queue:f.q_run})
-                processes.doc('registeration').set(f).then(() => {
+                processes.doc('ลงทะเบียนผู้ป่วย').set(f).then(() => {
                   this.out = f.q_run
                 })
               })
