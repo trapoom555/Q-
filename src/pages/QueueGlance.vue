@@ -29,7 +29,7 @@ export default {
         this.$bind('user', users.doc(this.$store.getters.LinkID)).then(user => {
         this.user === user
         /* eslint-disable no-console */
-        console.log(user.queueRef.est_time)
+        console.log(user)
     })},
 }
 </script>

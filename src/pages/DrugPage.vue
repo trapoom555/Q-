@@ -5,7 +5,7 @@
         <div class="box-text" style="width :20%;"> ห้องรับยา</div>
 
             <div class="pictur-room" style="text-align:center;">
-                <!-- <img class = "pictureRoom" v-bind:src="UrlPath['i']"> -->
+                <img class = "pictureRoom" v-bind:src="UrlPath['i']">
             </div>
 </div>
             <div class="text-room-topic" style="">สถานที่ :</div>
@@ -24,7 +24,11 @@
     
 </template>
 <script>
-// import { storage } from '../firebase';
+/* eslint-disable no-console */
+import { storage } from '../firebase';
+import { rtb } from "../firebase";
+const users = rtb.collection('user')
+var user
 
 export default {
     name : 'DrugPage',
@@ -32,12 +36,25 @@ export default {
         return {
             Pic_name: 'X-ray',
             UrlPath: 'NULL',
-            place: "อาคารสุเมธ"
+            place: "อาคารสุเมธ",
+            // user: ''
         }
     },
-    // created() {
-    //         this.UrlPath = storage.ref('Picture/X-ray.jpg').getDownloadURL();
-    // }
+    created() {
+        this.UrlPath = storage.ref('Picture/รับยา.jpg').getDownloadURL();
+        // this.$bind('user', users.doc(this.$store.getters.LinkID)).then(user => {
+        // this.user === user
+        
+            console.log(this.$store.getters.LinkID);
+        users.doc(this.$store.getters.LinkID).get().then(doc=>{
+            user = doc.data();
+            console.log(user);
+            console.log('wasczx');
+            
+        })
+        /* eslint-disable no-console */
+    
+    }
 }
 </script>
 <style>
