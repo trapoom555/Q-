@@ -68,7 +68,7 @@ export default {
               lineID:'',
               queue:0,
               enroll:false,
-              queueRef:rtb.collection('process').doc('registeration')
+              queueRef:rtb.collection('process').doc('ลงทะเบียนผู้ป่วย')
             })              
           }
       })
