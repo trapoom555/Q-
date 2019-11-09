@@ -1,25 +1,34 @@
 <template >
 <div id="body-all">
   <div class="bg-head">
-    <div class="circle">
-    <div class="box-circle">
+    <div v-if= "user.waitConfirm" class="circle" style="background:#e0e0eb;">
+      <div v-if= "user.waitConfirm" class="circle2">
+        <div class="box-circle" style="border-bottom:0;padding-top:8%;"> 
+          <button @click="confirm" style="font-size:20px; height:100%;border:0; margin-top:30%;background:none;" >กดที่นี่<br>เพื่อรับคิวถัดไป</button>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="circle" v-if= "!user.waitConfirm">
+    <div class="box-circle"  >
       <div class="box-item" style="color:#737171;margin-top:20%; font-size: 4vw;">เหลืออีก :</div>
       <div v-if="user.process_list.length != 0">
-      <div class="box-item" style="font-size:28px; display:inline-block;" >{{(user.process_list[user.process_list.length-1].status-user.queueRef.q_call) > 0 ? user.process_list[user.process_list.length-1].status-user.queueRef.q_call : 0+ " "}}</div>
+      <div class="box-item" style="font-size:30px; display:inline-block;" >{{(user.process_list[user.process_list.length-1].status-user.queueRef.q_call) > 0 ? user.process_list[user.process_list.length-1].status-user.queueRef.q_call : 0+ " "}}</div>
       <div class="box-item" style="display:inline-block; font-size: 5vw"> คิว</div>
       </div>
     </div>
-    <div class="box-circle" style="border-bottom:0;padding-top:10%;">
+    <div class="box-circle" style="padding-top:6%;border-bottom:0px">
       <button v-if = "user.waitConfirm" @click="confirm">ยืนยันคิว</button>
       <div  v-if = "!user.waitConfirm">
+      
+      <div class="box-item" style="font-size:27px; display:inline-block;">{{parseInt(this.user.queueRef.est_time * (user.process_list[user.process_list.length-1].status-user.queueRef.q_call)/ 60)}}</div>
       <div>
-        <div class="box-item" style="display:inline ;">นาที</div>
-        <div class="box-item" style="display:inline; margin-left:10%;">วินาที</div>
+        <div class="box-item" style="display:inline ; font-size:15px; color:grey;">นาที</div>
       </div>
-      <div class="box-item" style="font-size:23px; display:inline-block;">{{parseInt(this.user.queueRef.est_time * (user.process_list[user.process_list.length-1].status-user.queueRef.q_call)/ 60)}}</div>
-      <div class="box-item" style="font-size:23px; display:inline-block;">:</div>
-      <div class="box-item" style="font-size:23px; display:inline-block;">{{parseInt(this.user.queueRef.est_time * (user.process_list[user.process_list.length-1].status-user.queueRef.q_call) % 60) +" "}}</div>
-    </div>
+      </div>
+    
     </div>
     </div>
   </div>
@@ -38,11 +47,12 @@
 
   </div>
   <!-- <p>{{ $store.getters.LinkID }}</p> -->
-  <router-link to = "/DrugPage"><button type="button" style = "font-size: 4vw; margin-top:20%;">ดูสถานที่ {{user.process_list[user.process_list.length-1].name}}</button></router-link>
+  <router-link to = "/DrugPage"><button type="button" style = "font-size: 4vw; margin-top:20%;">สถานที่รับยา</button></router-link>
   
 </div>
 
 </template>
+
 
 
 
@@ -198,7 +208,7 @@ button{
   border: 2px solid #7FBCEB;
   box-sizing: border-box;
   border-radius: 5px;
-  max-width:200px;
+  max-width: 200px;
 
 }
 .task{
@@ -244,7 +254,7 @@ button{
   display: inline-block;
   padding: 3% 0 ;
   margin: 0 0 ;
-  box-shadow: 0px 3px 3px #d0d0e1;
+  box-shadow: 0px 3px 5px #dfdfdf;
 }
 .bg-head{
   background: linear-gradient(310.03deg, #DD7ECE -15.01%, rgba(255, 255, 255, 0) 107.56%), #7FECEB;
@@ -260,10 +270,46 @@ button{
   margin :auto;
   border-radius: 100%; 
 }
+.circle2{
+  background: #FFFFFF;
+  width: 200px;
+  height:200px;
+  display:block;
+  margin :auto;
+  border-radius: 100%; 
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-name: buttonTransition;
+  transform-origin: center center;
+}
+@keyframes buttonTransition {
+    from {
+        transform: scale(0.8);
+    }
+    to {
+        transform: scale(1);
+    }
+}
 * {
   font-family: 'Noto Sans Thai Cound', sans-serif;
 }
 
+@keyframes buttonTransition {
+    from {
+        transform: scale(0.9);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+
+.innerCircle {
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-name: buttonTransition;
+    transform-origin: center center;
+
+}
 .grey {
   color: #888;
 }
