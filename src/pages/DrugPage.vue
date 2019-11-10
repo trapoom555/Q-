@@ -49,8 +49,9 @@ export default {
         
         users.doc(this.$store.getters.LinkID).get().then(doc=>{
             user = doc.data();
+            console.log(user.process_list[user.process_list.length-1].name)
         })
-        console.log(user.process_list[user.process_list.length-1].name)
+        
         
         this.picSel = user.process_list[user.process_list.length-1].name
         this.UrlPath = storage.ref('Picture/' + this.picSel + '.jpg').getDownloadURL();
@@ -61,19 +62,19 @@ export default {
         }
         else if(this.picSel == 'X-ray'){
             this.action = 'X-ray'
-            this.display = 'ห้อง X-ray'
+            this.display = 'ห้องรัศมี'
         }
         else if(this.picSel == 'ลงทะเบียนผู้ป่วย'){
             this.action = 'ลงทะเบียนผู้ป่วย'
-            this.display = 'แผนกลงทะเบียนผู้ป่วยใหม่'
+            this.display = 'ห้องจามจุรี'
         }
         else if(this.picSel == 'ชำระเงิน'){
             this.action = 'ชำระเงิน'
-            this.display = 'แผนกลงทะเบียนผู้ป่วยใหม่'
+            this.display = 'ห้องจุฬา'
         }
         else if(this.picSel == 'รับยา'){
-            this.action = 'ชำระเงิน'
-            this.display = 'ห้องชำระเงิน'
+            this.action = 'รับยา'
+            this.display = 'ห้องฮ่อง'
         }
         else if(this.picSel == 'เจาะเลือด'){
             this.action = 'เจาะเลือด'
@@ -112,7 +113,7 @@ export default {
     font-weight: bold;
 }
 .box-text{
-    width: 10%;
+    width: 30%;
     display:inline-block;
     text-align: left;
     margin: auto;
@@ -125,12 +126,12 @@ export default {
 }
 
 .box-text-topic{
-    width: 12%;
+    max-width: 30%;
+    padding-right: 4%;
     display:inline-block;
     margin: auto;
     vertical-align: -50%;
     font-size:4.5vw ;
-    padding:0 1%;
     margin-top: 10%;
     margin-bottom: 5%;
     font-weight: bold;

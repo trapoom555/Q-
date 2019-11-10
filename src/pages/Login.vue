@@ -26,11 +26,11 @@ export default {
     name:'Regis',
     data: function() {
         return{
-            ID: '1509966059869',
+            ID: '',
             isIDtrue: true,
             isIDcomplete: false,
             isID: false,
-            birthDay: '28/05/43',
+            birthDay: '',
             isBirthdayTrue: true,
             isBirthdayComplete: false,
             isBirthday: false,

@@ -15,7 +15,7 @@
     <div class="box-circle"  >
       <div class="box-item" style="color:#737171;margin-top:20%; font-size: 4vw;">เหลืออีก :</div>
       <div v-if="user.process_list.length != 0">
-      <div class="box-item" style="font-size:30px; display:inline-block;" >{{(user.process_list[user.process_list.length-1].status-user.queueRef.q_call) > 0 ? user.process_list[user.process_list.length-1].status-user.queueRef.q_call : 0+ " "}}</div>
+      <div class="box-item" style="font-size:30px; display:inline-block;" >{{(user.queue-user.queueRef.q_call) > 0 ? user.queue-user.queueRef.q_call : 0+ " "}}</div>
       <div class="box-item" style="display:inline-block; font-size: 5vw"> คิว</div>
       </div>
     </div>
@@ -23,7 +23,7 @@
       <button v-if = "user.waitConfirm" @click="confirm">ยืนยันคิว</button>
       <div  v-if = "!user.waitConfirm">
       
-      <div class="box-item" style="font-size:27px; display:inline-block;">{{parseInt(this.user.queueRef.est_time * (user.process_list[user.process_list.length-1].status-user.queueRef.q_call)/ 60)}}</div>
+      <div class="box-item" style="font-size:27px; display:inline-block;">{{parseInt(this.user.queueRef.est_time * (user.queue-user.queueRef.q_call)/ 60)}}</div>
       <div>
         <div class="box-item" style="display:inline ; font-size:15px; color:grey;">นาที</div>
       </div>
@@ -34,20 +34,21 @@
   </div>
   <div class="name-user" style="">ชื่อ {{user.name}}</div>
   <div class="name-user" style="">คิวที่ {{user.queue}}</div>
+  <div style = "height: 220px;">
   <div class="task" style="padding-left:20px; font-size: 4vw;">
     กระบวนการ
   </div>
   <div class="task" style="width:30%; max-width:150px;text-align:center; font-size: 4vw;">
   สถานะ
   </div><br>
-  <div v-for = "e in this.user.process_list" :key="e.name" style="padding-left:0px; font-size: 4.2vw;">
+  <div v-for = "e in this.hmhm" :key="e.name" style="padding-left:0px; font-size: 4.2vw;">
     <div :class = "{grey: !Number.isInteger(e.status)}" style = "text-align:justify; width: 60%; margin:auto; margin-left:17%"><br><span>{{e.name}}</span><span style = "float:right">{{e.status != 'pass' ? Number.parseInt(e.status) == 0 ? "ถึงคิวของท่านแล้ว" :"รอ" : "เสร็จสิ้น"}}</span><br></div>
   </div>
   <div class="task-data" style="width:30%; max-width:150px;text-align:center;border-right:0; font-size: 4vw;">
-
+  </div>
   </div>
   <!-- <p>{{ $store.getters.LinkID }}</p> -->
-  <router-link to = "/DrugPage"><button type="button" style = "font-size: 4vw; margin-top:20%;">สถานที่รับยา</button></router-link>
+  <router-link to = "/DrugPage"><button type="button" style = "font-size: 4vw; margin-top:17%;">ดูสถานที่ {{user.process_list[user.process_list.length - 1].name}}</button></router-link>
   
 </div>
 
@@ -86,6 +87,11 @@ export default {
    
         console.log(this.user.process_list[0].name)
     })
+  },
+  computed: {
+    hmhm: function() {
+      return(this.user.process_list.slice(-3))
+    }
   },
   methods: {
     getQueue() {
@@ -201,14 +207,14 @@ export default {
 
 <style>
 button{
-  margin-top: 60px;
-  width: 30%;
+  margin-top: 70px;
+  width: 60vw;
   height:45px;
   background:#FFFFFF;
   border: 2px solid #7FBCEB;
   box-sizing: border-box;
   border-radius: 5px;
-  max-width: 200px;
+  max-width: 250px;
 
 }
 .task{
