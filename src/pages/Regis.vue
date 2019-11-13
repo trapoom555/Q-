@@ -7,7 +7,7 @@
     <p  :class = "{wrongID: !isIDtrue, trueID: isIDtrue}">คุณใส่หมายเลขบัตรประชาชนผิด</p>
     <input type="text" id="lname" name="Brith day" placeholder="กรอกวันเกิด (วว/ดด/ปป)" v-model = "onChangeBirthday">
     <p :class = "{wrongBirthDay: !isBirthdayTrue, trueBirthDay: isBirthdayTrue}">กรุณาใส่วันเกิดในรูปแบบ วว/ดด/ปป</p>
-    <router-link :class = "{disable: !isID || !isBirthday}" to="/Notification"><input type="submit" value="ต่อไป"></router-link>
+    <router-link :class = "{disable: !isID || !isBirthday || this.name.length == 0}" to="/Notification"><input type="submit" value="ต่อไป"></router-link>
   </form>
 </div>
 </template>
