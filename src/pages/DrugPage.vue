@@ -57,12 +57,12 @@ export default {
         this.UrlPath = storage.ref('Picture/' + this.picSel + '.jpg').getDownloadURL();
         if (user.process_list[user.process_list.length-1].type == 'process' || user.process_list[user.process_list.length-1].type == 'department'){
             rtb.collection('detail').doc(this.picSel).get().then(doc=>{
-                this.place = doc.data
+                this.place = doc.data()
             })
         }
         else{
             rtb.collection('detail').doc(user.process_list[user.process_list.length-1].type).get().then(doc=>{
-                this.place = doc.data
+                this.place = doc.data()
             })
         }
         /* eslint-disable no-console */
