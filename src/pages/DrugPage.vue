@@ -54,6 +54,9 @@ export default {
         
         
         this.picSel = user.process_list[user.process_list.length-1].name
+        if(this.picSel == 'OPD01' || this.picSel == 'OPD02' || this.picSel == 'OPD03' || this.picSel == 'OPD04'){
+            this.picSel = 'OPD'
+        }
         this.UrlPath = storage.ref('Picture/' + this.picSel + '.jpg').getDownloadURL();
         if (user.process_list[user.process_list.length-1].type == 'process' || user.process_list[user.process_list.length-1].type == 'department'){
             rtb.collection('detail').doc(this.picSel).get().then(doc=>{
