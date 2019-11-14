@@ -1,7 +1,7 @@
 <template>
-<div class="big">
+<div class="big" style = "margin-top: 20%;">
   <p class = "topic">ใส่ข้อมูลเพื่อกดคิว</p>
-  <form action="/action_page.php"> 
+  <form> 
     <input type="text" id="fname" name="ID" placeholder="กรอกชื่อ" v-model = "onChangeName">
     <input type="text" id="fname" name="ID" placeholder="กรอกเลขบัตรประชาชน" v-model = "onChangeID">
     <p  :class = "{wrongID: !isIDtrue, trueID: isIDtrue}">คุณใส่หมายเลขบัตรประชาชนผิด</p>
@@ -136,7 +136,7 @@ export default {
 
 <style>
 .big{
-    margin-top: 20%;
+    margin-top: 5%;
 }
 .topic {
     font-size:5vw;

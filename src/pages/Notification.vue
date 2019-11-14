@@ -1,8 +1,8 @@
 <template>
 <div class="noti">
-    <div><h1>เลือกช่องทางการแจ้งเตือนเมื่อใกล้ถึงคิว</h1></div>
-    <router-link to="/Line"><button class="line"><img src = "../assets/line.png">LINE</button></router-link>
-    <router-link to="/Gmail"><button class="gmail"><img src = "../assets/gmail.png">Gmail</button></router-link>
+    <div><h1 style = "margin-bottom: 12%; color:#555">เลือกช่องทางการแจ้งเตือนเมื่อใกล้ถึงคิว</h1></div>
+    <router-link to="/Line"><button class="line" style = ""><img src = "../assets/line.png"><div style = "display: inline;position: relative; vertical-align: 30%">LINE</div></button></router-link>
+    <router-link to="/Gmail"><button class="gmail"><img src = "../assets/gmail.png"><div style = "display: inline;position: relative; vertical-align: 30%">Email</div></button></router-link>
     <router-link to="/QueueGlance"><button class="nono">ไม่รับการแจ้งเตือน</button></router-link>
 </div>
 </template>
@@ -88,19 +88,21 @@ h1{
 button{
     margin: auto;
     margin-top: 10%;
-    padding:1% 5%;
+    padding:0% 5%;
+    height: 60px;
     width: 90%;
     background: white;
     border-radius: 4px;
     border: 1px solid #ccc;
-    font-size: 3vw;
+    font-size: 3.7vw;
     display: block;
+    color: #666;
 }
 
 .line:focus{background: #ddd}
 .gmail:focus{background: #ddd}
 .nono:focus{background: #ddd}
-.noti{margin-top: 35%}
+.noti{margin-top: 40%}
 * {
     font-family: 'Noto Sans Thai Cound', sans-serif;
 }

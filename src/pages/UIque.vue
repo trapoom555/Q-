@@ -23,7 +23,7 @@
       <button v-if = "user.waitConfirm" @click="confirm">ยืนยันคิว</button>
       <div  v-if = "!user.waitConfirm">
       
-      <div class="box-item" style="font-size:27px; display:inline-block;">{{parseInt(this.user.queueRef.est_time * (user.queue-user.queueRef.q_call)/ 60)}}</div>
+      <div class="box-item" style="font-size:27px; display:inline-block;">{{parseInt(this.user.queueRef.est_time * (user.queue-user.queueRef.q_call)/ 60) + 1}}</div>
       <div>
         <div class="box-item" style="display:inline ; font-size:15px; color:grey;">นาที</div>
       </div>
