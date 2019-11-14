@@ -102,7 +102,31 @@ export default {
         departments.doc('OPD').get().then(doc => {
           this.out = 789
           if (doc.exists) {
-            
+            return db.runTransaction(function(transaction) {
+              // This code may get re-run multiple times if there are conflicts.
+              return transaction.get(departments.doc('OPD')).then(function(doc) {
+                  if (!doc.exists) {
+                      throw "Document does not exist!";
+                  }
+                  f = doc.data()
+                  f.q_run+=1
+                  
+                  f.q_list.push({userID:this.user.ID,queue:f.q_run})
+                  transaction.set(departments.doc('OPD'), f);
+              });
+            }).then(function() {
+                console.log("Transaction successfully committed!");
+                users.doc(this.user.ID).set({
+                  process_list: [{
+                    type : 'department',
+                    name : 'OPD',
+                    status : f.q_run
+                  }],
+                  queue : f.q_run
+                }, { merge: true });
+            }).catch(function(error) {
+                console.log("Transaction failed: ", error);
+            });
             this.$bind('department', departments.doc('OPD')).then(department => {
               this.process === department
               f = doc.data()
