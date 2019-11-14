@@ -80,12 +80,11 @@ export default {
     this.$bind('user', users.doc(this.$store.getters.LinkID)).then(user => {
         this.user === user
         console.log(this.$store.getters.LinkID)
-        console.log(user)
+        console.log(this.user)
         if(this.user.process_list.length == 0){
           this.getQueue()
         }
-   
-        console.log(this.user.process_list[0].name)
+  
     })
   },
   computed: {
@@ -95,59 +94,47 @@ export default {
   },
   methods: {
     getQueue() {
-      console.log('getget')
+       
       this.out = 1234
+      temp = this.user
       if(this.user.enroll == true){
-        console.log('truetrue')
-        departments.doc('OPD').get().then(doc => {
-          this.out = 789
-          if (doc.exists) {
-            return db.runTransaction(function(transaction) {
+        rtb.runTransaction(function(transaction) {
               // This code may get re-run multiple times if there are conflicts.
-              return transaction.get(departments.doc('OPD')).then(function(doc) {
-                  if (!doc.exists) {
-                      throw "Document does not exist!";
-                  }
-                  f = doc.data()
-                  f.q_run+=1
+          return transaction.get(departments.doc('OPD')).then(function(doc) {
+              if (!doc.exists) {
+                  throw "Document does not exist!";
                   
-                  f.q_list.push({userID:this.user.ID,queue:f.q_run})
-                  transaction.set(departments.doc('OPD'), f);
-              });
-            }).then(function() {
-                console.log("Transaction successfully committed!");
-                users.doc(this.user.ID).set({
-                  process_list: [{
-                    type : 'department',
-                    name : 'OPD',
-                    status : f.q_run
-                  }],
-                  queue : f.q_run
-                }, { merge: true });
-            }).catch(function(error) {
-                console.log("Transaction failed: ", error);
-            });
-            this.$bind('department', departments.doc('OPD')).then(department => {
-              this.process === department
+              }
               f = doc.data()
-              f.q_run+=1
               console.log(f)
-              this.out = 555
-              users.doc(this.user.ID).set({
-                process_list: [{
-                  type : 'department',
-                  name : 'OPD',
-                  status : f.q_run
-                }],
-                queue : f.q_run
-              }, { merge: true });
-              f.q_list.push({userID:this.user.ID,queue:f.q_run})
-              departments.doc('OPD').set(f).then(() => {
-                this.out = f.q_run
-              })
-            })
-          }
-        })
+              // console.log(temp)
+              
+              f.q_run+=1
+              
+              // console.log(this.user)
+              f.q_list.push({userID:temp.ID,queue:f.q_run})
+              
+              console.log(f)
+              console.log('efe')
+              transaction.update(departments.doc('OPD'),{
+                q_run : f.q_run,
+                q_list: f.q_list
+              });
+              console.log('ppp')
+          });
+        }).then(function() {
+            console.log("Transaction successfully committed!");
+            users.doc(temp.ID).set({
+              process_list: [{
+                type : 'department',
+                name : 'OPD',
+                status : f.q_run
+              }],
+              queue : f.q_run
+            }, { merge: true });
+        }).catch(function(error) {
+            console.log("Transaction failed: ", error);
+        });
       }
       else{
         processes.doc('ลงทะเบียนผู้ป่วย').get().then(doc => {
@@ -157,14 +144,13 @@ export default {
               this.$bind('process', processes.doc('ลงทะเบียนผู้ป่วย')).then(process => {
                 this.process === process
                 f = doc.data()
-                f.q_run+=1
 
                 this.out = 555
                 users.doc(this.user.ID).set({
                   process_list: [{
                     type : 'process',
                     name : 'ลงทะเบียนผู้ป่วย',
-                    status : f.q_run
+                    status : f.q_run + 1
                   }],
                   queue : f.q_run
                 }, { merge: true });
