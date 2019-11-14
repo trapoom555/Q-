@@ -75,7 +75,7 @@ export default {
         }
         else if(this.picSel == 'X-ray'){
             this.action = 'X-ray'
-            this.display = 'ห้องรัศมี'
+            this.display = 'ห้องขัง'
         }
         else if(this.picSel == 'ลงทะเบียนผู้ป่วย'){
             this.action = 'ลงทะเบียนผู้ป่วย'
@@ -83,7 +83,7 @@ export default {
         }
         else if(this.picSel == 'ชำระเงิน'){
             this.action = 'ชำระเงิน'
-            this.display = 'ห้องจุฬา'
+            this.display = 'ห้องกรง'
         }
         else if(this.picSel == 'รับยา'){
             this.action = 'รับยา'
