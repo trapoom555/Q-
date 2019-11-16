@@ -5,10 +5,10 @@
     <input type="text" id="fname" name="ID" placeholder="กรอกชื่อ" v-model = "onChangeName">
     <input type="text" id="fname" name="ID" placeholder="กรอกเลขบัตรประชาชน" v-model = "onChangeID">
     <p  :class = "{wrongID: !isIDtrue, trueID: isIDtrue}">คุณใส่หมายเลขบัตรประชาชนผิด</p>
+    <p :class = "{wrongID: isAccount, trueID: !isAccount}">คุณมี account นี้แล้วกรุณาไปหน้า login</p>
     <input type="text" id="lname" name="Brith day" placeholder="กรอกวันเกิด (วว/ดด/ปป)" v-model = "onChangeBirthday">
     <p :class = "{wrongBirthDay: !isBirthdayTrue, trueBirthDay: isBirthdayTrue}">กรุณาใส่วันเกิดในรูปแบบ วว/ดด/ปป</p>
-    <router-link :class = "{disable: !isID || !isBirthday || this.name.length == 0}" to="/Notification"><input type="submit" value="ต่อไป"></router-link>
-    <p>{{this.out}}</p>
+    <router-link :class = "{disable: !isID || !isBirthday || this.name.length || !isAccount == 0}" to="/Notification"><input type="submit" value="ต่อไป"></router-link>
   </form>
 </div>
 </template>
@@ -30,7 +30,8 @@ export default {
             isBirthdayTrue: true,
             isBirthdayComplete: false,
             isBirthday: false,
-            out: ''
+            out: '',
+            isAccount: false
         }  
     },
     created() {
@@ -113,9 +114,16 @@ export default {
                         this.user = doc.data()
                         if(this.user.password == 'OP'){
                             this.out = ''
+                            this.isAccount = false;
                         }
 
-                        else this.out = 'already have this account'
+                        else { 
+                            this.isAccount = true
+                            this.out = 'already have this account' 
+                            }
+                    }
+                    else {
+                        this.isAccount = false;
                     } 
 
                 })
