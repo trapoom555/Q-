@@ -15,7 +15,7 @@
     <div class="box-circle"  >
       <div class="box-item" style="color:#737171;margin-top:20%; font-size: 4vw;">เหลืออีก :</div>
       <div v-if="user.process_list.length != 0">
-      <div class="box-item" style="font-size:30px; display:inline-block;" >{{(user.queue-user.queueRef.q_call) > 0 ? user.queue-user.queueRef.q_call : 0+ " "}}</div>
+      <div class="box-item" style="font-size:30px; display:inline-block;" >{{(user.queueRef.q_call) > 0 ? user.queue-user.queueRef.q_call : 0+ " "}}</div>
       <div class="box-item" style="display:inline-block; font-size: 5vw"> คิว</div>
       </div>
     </div>
@@ -164,7 +164,8 @@ export default {
                       name : 'ลงทะเบียนผู้ป่วย',
                       status : f.q_run
                     }],
-                    queue : f.q_run
+                    queue : f.q_run,
+                    waitConfirm : false,
                   }, { merge: true });
               }).catch(function(error) {
                   console.log("Transaction failed: ", error);
@@ -218,8 +219,9 @@ export default {
                   type : 'process',
                   name : 'ลงทะเบียนผู้ป่วย',
                   status : f.q_run,
-                  waitConfirm : false
+                 
                 }],
+                 waitConfirm : false,
                 queue : f.q_run
               }, { merge: true });
           }).catch(function(error) {
