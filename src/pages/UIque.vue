@@ -2,9 +2,9 @@
 <div id="body-all">
   <div class="bg-head">
     <div v-if= "user.waitConfirm" class="circle" style="background:#e0e0eb;">
-      <div v-if= "user.waitConfirm" class="circle2">
+      <div class="circle2">
         <div class="box-circle" style="border-bottom:0;padding-top:8%;"> 
-          <button @click="confirm" style="font-size:20px; height:100%;border:0; margin-top:30%;background:none;" >กดที่นี่<br>เพื่อรับคิวถัดไป</button>
+          <button @click="confirm" style="font-size:20px; height:100%;border:0; margin-top:25%;background:none; color: #333;" >กดที่นี่<br>เพื่อรับคิวถัดไป<div style = "font-size: 17px; margin-top: 3%; color: #555;">คิวถัดไปเหลือ {{user.queueRef.q_run - user.queueRef.q_call + 1}} คิว</div></button>
         </div>
       </div>
     </div>

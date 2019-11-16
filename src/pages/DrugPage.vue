@@ -27,9 +27,8 @@
 /* eslint-disable no-console */
 import { storage } from '../firebase';
 import { rtb } from "../firebase";
-const users = rtb.collection('user')
+// const users = rtb.collection('user')
 var user
-
 export default {
     name : 'DrugPage',
     data: function() {
@@ -46,12 +45,10 @@ export default {
     created() {
         // this.$bind('user', users.doc(this.$store.getters.LinkID)).then(user => {
         // this.user === user
-        
-        users.doc(this.$store.getters.LinkID).get().then(doc=>{
+        rtb.collection('user').doc(this.$store.getters.LinkID).get().then(doc=>{
             user = doc.data();
+            console.log("haha")
             console.log(user.process_list[user.process_list.length-1].name)
-        })
-        
         
         this.picSel = user.process_list[user.process_list.length-1].name
         if(this.picSel == 'OPD01' || this.picSel == 'OPD02' || this.picSel == 'OPD03' || this.picSel == 'OPD04'){
@@ -94,7 +91,7 @@ export default {
             this.display = 'ห้องเจาะเลือด'
         }
         
-
+})
     
     }
 }

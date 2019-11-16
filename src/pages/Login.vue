@@ -142,8 +142,11 @@ export default {
                 console.log('haha');
                 if (doc.exists) {
                     if(this.user.password == this.birthDay){
-                        this.check  = 1
                         this.out = 'log in success'
+                        this.isPasstrue = true 
+                        this.check  = 1
+                        this.checkvif();
+                    
                         // this.out = this.user.process_list[this.user.process_list.length-1].type
                     }
                     else{
