@@ -80,12 +80,11 @@ export default {
     this.$bind('user', users.doc(this.$store.getters.LinkID)).then(user => {
         this.user === user
         console.log(this.$store.getters.LinkID)
-        console.log(user)
+        console.log(this.user)
         if(this.user.process_list.length == 0){
           this.getQueue()
         }
-   
-        console.log(this.user.process_list[0].name)
+  
     })
   },
   computed: {
@@ -95,60 +94,99 @@ export default {
   },
   methods: {
     getQueue() {
-      console.log('getget')
+       
       this.out = 1234
+      temp = this.user
       if(this.user.enroll == true){
-        console.log('truetrue')
-        departments.doc('OPD').get().then(doc => {
-          this.out = 789
-          if (doc.exists) {
-            
-            this.$bind('department', departments.doc('OPD')).then(department => {
-              this.process === department
+        rtb.runTransaction(function(transaction) {
+              // This code may get re-run multiple times if there are conflicts.
+          return transaction.get(departments.doc('OPD')).then(function(doc) {
+              if (!doc.exists) {
+                  throw "Document does not exist!";
+                  
+              }
               f = doc.data()
-              f.q_run+=1
               console.log(f)
-              this.out = 555
-              users.doc(this.user.ID).set({
-                process_list: [{
-                  type : 'department',
-                  name : 'OPD',
-                  status : f.q_run
-                }],
-                queue : f.q_run
-              }, { merge: true });
-              f.q_list.push({userID:this.user.ID,queue:f.q_run})
-              departments.doc('OPD').set(f).then(() => {
-                this.out = f.q_run
-              })
-            })
-          }
-        })
+              // console.log(temp)
+              
+              f.q_run+=1
+              
+              // console.log(this.user)
+              f.q_list.push({userID:temp.ID,queue:f.q_run})
+              
+              console.log(f)
+              console.log('efe')
+              transaction.update(departments.doc('OPD'),{
+                q_run : f.q_run,
+                q_list: f.q_list
+              });
+              console.log('ppp')
+          });
+        }).then(function() {
+            console.log("Transaction successfully committed!");
+            users.doc(temp.ID).set({
+              process_list: [{
+                type : 'department',
+                name : 'OPD',
+                status : f.q_run
+              }],
+              queue : f.q_run
+            }, { merge: true });
+        }).catch(function(error) {
+            console.log("Transaction failed: ", error);
+        });
       }
       else{
         processes.doc('ลงทะเบียนผู้ป่วย').get().then(doc => {
           this.out = 666666
           if (doc.exists) {
-            this.out = 555555555
-              this.$bind('process', processes.doc('ลงทะเบียนผู้ป่วย')).then(process => {
-                this.process === process
-                f = doc.data()
-                f.q_run+=1
+            rtb.runTransaction(function(transaction) {
+              // This code may get re-run multiple times if there are conflicts.
+              return transaction.get(processes.doc('ลงทะเบียนผู้ป่วย')).then(function(doc) {
+                  if (!doc.exists) {
+                      throw "Document does not exist!";
+                      
+                  }
+                  f = doc.data()
+                  console.log(f)
+                  f.q_run+=1
+                  f.q_list.push({userID:temp.ID,queue:f.q_run})
+                  transaction.update(processes.doc('ลงทะเบียนผู้ป่วย'),{
+                    q_run : f.q_run,
+                    q_list: f.q_list
+                  });
+                });
+              }).then(function() {
+                  console.log("Transaction successfully committed!");
+                  users.doc(temp.ID).set({
+                    process_list: [{
+                      type : 'process',
+                      name : 'ลงทะเบียนผู้ป่วย',
+                      status : f.q_run
+                    }],
+                    queue : f.q_run
+                  }, { merge: true });
+              }).catch(function(error) {
+                  console.log("Transaction failed: ", error);
+              });
+              // this.$bind('process', processes.doc('ลงทะเบียนผู้ป่วย')).then(process => {
+              //   this.process === process
+              //   f = doc.data()
 
-                this.out = 555
-                users.doc(this.user.ID).set({
-                  process_list: [{
-                    type : 'process',
-                    name : 'ลงทะเบียนผู้ป่วย',
-                    status : f.q_run
-                  }],
-                  queue : f.q_run
-                }, { merge: true });
-                f.q_list.push({userID:this.user.ID,queue:f.q_run})
-                processes.doc('ลงทะเบียนผู้ป่วย').set(f).then(() => {
-                  this.out = f.q_run
-                })
-              })
+              //   this.out = 555
+              //   users.doc(this.user.ID).set({
+              //     process_list: [{
+              //       type : 'process',
+              //       name : 'ลงทะเบียนผู้ป่วย',
+              //       status : f.q_run + 1
+              //     }],
+              //     queue : f.q_run
+              //   }, { merge: true });
+              //   f.q_list.push({userID:this.user.ID,queue:f.q_run})
+              //   processes.doc('ลงทะเบียนผู้ป่วย').set(f).then(() => {
+              //     this.out = f.q_run
+              //   })
+              // })
           }
         })
         }
@@ -156,47 +194,89 @@ export default {
       confirm(){
       temp = this.user.process_list[this.user.process_list.length-1]
       this.out = temp
-      
+      var user = this.user
       if(temp.type == 'department' || temp.type == 'process'){
-        rtb.collection(temp.type).doc(temp.name).get().then(doc => {
-          if (doc.exists) {
+        rtb.runTransaction(function(transaction) {
+          // This code may get re-run multiple times if there are conflicts.
+          return transaction.get(rtb.collection(temp.type).doc(temp.name)).then(function(doc) {
+            if (!doc.exists) {
+                throw "Document does not exist!";
+                
+            }
             f = doc.data()
+            console.log(f)
             f.q_run+=1
-            f.q_list.push({userID:this.user.ID,queue:f.q_run})
-            rtb.collection(temp.type).doc(temp.name).update({
+            f.q_list.push({userID:user.ID,queue:f.q_run})
+            transaction.update(rtb.collection(temp.type).doc(temp.name),{
               q_run : f.q_run,
-              q_list : f.q_list
-            })
-            this.user.process_list[this.user.process_list.length - 1].status = f.q_run
-            this.user.waitConfirm = false
-            this.user.queueRef =  rtb.collection(temp.type).doc(temp.name)
-            this.user.queue = f.q_run
-            users.doc(this.user.ID).set(this.user)
-          } else {
-              this.out = 'not have this user ID'
-              this.check = 0
-          }
-        }) 
+              q_list: f.q_list
+            });
+          }).then(function() {
+              console.log("Transaction successfully committed!");
+              users.doc(user.ID).set({
+                process_list: [{
+                  type : 'process',
+                  name : 'ลงทะเบียนผู้ป่วย',
+                  status : f.q_run,
+                  waitConfirm : false
+                }],
+                queue : f.q_run
+              }, { merge: true });
+          }).catch(function(error) {
+              console.log("Transaction failed: ", error);
+          });
+        })
+ 
       }
       else {
-        rtb.collection('department').doc(temp.type).collection('Doctors').doc(temp.name).get().then(doc => {
-         if (doc.exists) {
-            f = doc.data()
-            f.q_run+=1
-            f.q_list.push({userID:this.user.ID,queue:f.q_run})
-            rtb.collection('department').doc(temp.type).collection('Doctors').doc(temp.name).update({
-              q_run : f.q_run,
-              q_list : f.q_list
-            })
-            this.user.process_list[this.user.process_list.length - 1].status = f.q_run
-            this.user.waitConfirm = false
-            this.user.queueRef =  rtb.collection(temp.type).doc(temp.name)
-            users.doc(this.user.ID).set(this.user)
-          } else {
-              this.out = 'not have this user ID'
-              this.check = 0
-          }
-        }) 
+        rtb.runTransaction(function(transaction) {
+          // This code may get re-run multiple times if there are conflicts.
+          return transaction.get(rtb.collection('department').doc(temp.type).collection('Doctors').doc(temp.name)).then(function(doc) {
+              if (!doc.exists) {
+                  throw "Document does not exist!";
+                  
+              }
+              f = doc.data()
+              console.log(f)
+              f.q_run+=1
+              f.q_list.push({userID:user.ID,queue:f.q_run})
+              transaction.update(rtb.collection('department').doc(temp.type).collection('Doctors').doc(temp.name),{
+                q_run : f.q_run,
+                q_list: f.q_list
+              });
+          }).then(function() {
+              console.log("Transaction successfully committed!");
+              users.doc(user.ID).set({
+                process_list: [{
+                  type : 'process',
+                  name : 'ลงทะเบียนผู้ป่วย',
+                  status : f.q_run,
+                  waitConfirm : false
+                }],
+                queue : f.q_run
+              }, { merge: true });
+          }).catch(function(error) {
+              console.log("Transaction failed: ", error);
+          })
+        })
+        // rtb.collection('department').doc(temp.type).collection('Doctors').doc(temp.name).get().then(doc => {
+        //  if (doc.exists) {
+        //     f = doc.data()
+        //     f.q_run+=1
+        //     f.q_list.push({userID:this.user.ID,queue:f.q_run})
+        //     rtb.collection('department').doc(temp.type).collection('Doctors').doc(temp.name).update({
+        //       q_run : f.q_run,
+        //       q_list : f.q_list
+        //     })
+        //     this.user.process_list[this.user.process_list.length - 1].status = f.q_run
+        //     this.user.waitConfirm = false
+        //     this.user.queueRef =  rtb.collection(temp.type).doc(temp.name)
+        //     users.doc(this.user.ID).set(this.user)
+        //   } else {
+        //       this.out = 'not have this user ID'
+        //       this.check = 0
+        //   }
+        // }) 
       }
     }
   }

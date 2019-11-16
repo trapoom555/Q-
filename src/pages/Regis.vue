@@ -8,6 +8,7 @@
     <input type="text" id="lname" name="Brith day" placeholder="กรอกวันเกิด (วว/ดด/ปป)" v-model = "onChangeBirthday">
     <p :class = "{wrongBirthDay: !isBirthdayTrue, trueBirthDay: isBirthdayTrue}">กรุณาใส่วันเกิดในรูปแบบ วว/ดด/ปป</p>
     <router-link :class = "{disable: !isID || !isBirthday || this.name.length == 0}" to="/Notification"><input type="submit" value="ต่อไป"></router-link>
+    <p>{{this.out}}</p>
   </form>
 </div>
 </template>
@@ -107,6 +108,17 @@ export default {
                 this.$store.commit('IDMutation', newValue); 
                 this.checkID();
                 this.isID = this.isIDtrue && this.isIDcomplete;
+                rtb.collection('user').doc(this.ID).get().then(doc => {
+                    if (doc.exists) {
+                        this.user = doc.data()
+                        if(this.user.password == 'OP'){
+                            this.out = 'finish'
+                        }
+
+                        else this.out = 'already have this account'
+                    } 
+
+                })
             }
         },
         onChangeBirthday:{

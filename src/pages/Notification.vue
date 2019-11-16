@@ -1,5 +1,6 @@
 <template>
 <div class="noti">
+    <p>{{out}}</p>
     <div><h1 style = "margin-bottom: 12%; color:#555">เลือกช่องทางการแจ้งเตือนเมื่อใกล้ถึงคิว</h1></div>
     <router-link to="/Line"><button class="line" style = ""><img src = "../assets/line.png"><div style = "display: inline;position: relative; vertical-align: 30%">LINE</div></button></router-link>
     <router-link to="/Gmail"><button class="gmail"><img src = "../assets/gmail.png"><div style = "display: inline;position: relative; vertical-align: 30%">Email</div></button></router-link>
@@ -22,60 +23,62 @@ export default {
         }
     },
     created() {
-      this.$bind('user', users.doc(this.$store.getters.LinkID)).then(user => {
-        this.user === user
-        console.log(this.$store.getters.LinkID)
-        this.ID = this.$store.getters.LinkID
-        this.birthDay = this.$store.getters.LinkBirthday
-        this.name = this.$store.getters.LinkName
-        this.register();
-      });
+      this.ID = this.$store.getters.LinkID
+      this.birthDay = this.$store.getters.LinkBirthday
+      this.name = this.$store.getters.LinkName
+      this.register();
+      // this.$bind('user', users.doc(this.$store.getters.LinkID)).then(user => {
+      //   this.user === user
+      //   console.log(this.user)
+        
+      // });
     },
     methods: {
         register(){
+        rtb.collection('user').doc(this.ID).get().then(doc => {
+            if (doc.exists) {
+              this.user = doc.data()
+              console.log(this.user)
+              this.out = this.user
+              if(this.user.password == 'OP'){
+                users.doc(this.ID).set({
+                  name: this.name,
+                  ID:this.ID,
+                  password:this.birthDay,
+                  process_list:[],
+                  email:'',
+                  lineID:'',
+                  queue:0,
+                  enroll:true,
+                  waitConfirm : false,
+                  queueRef:rtb.collection('department').doc('OPD')
+                  
+                })
+                this.out = 'finish'
+              }
 
-      this.$bind('user', users.doc(this.ID))
-      rtb.collection('user').doc(this.ID).get().then(doc => {
-          if (doc.exists) {
-            if(this.user.password == 'OP'){
+              // else this.out = 'already have this account'
+            } 
+            else {
+
               users.doc(this.ID).set({
                 name: this.name,
                 ID:this.ID,
                 password:this.birthDay,
                 process_list:[],
+                waitConfirm : false,
                 email:'',
                 lineID:'',
                 queue:0,
-                enroll:true,
-                waitConfirm : false,
-                queueRef:rtb.collection('department').doc('OPD')
-                
-              })
-              this.out = 'finish'
+                enroll:false,
+                queueRef:rtb.collection('process').doc('ลงทะเบียนผู้ป่วย')
+              })              
             }
+        })
+        
 
-            else this.out = 'already have this account'
-          } 
-          else {
-
-            users.doc(this.ID).set({
-              name: this.name,
-              ID:this.ID,
-              password:this.birthDay,
-              process_list:[],
-              waitConfirm : false,
-              email:'',
-              lineID:'',
-              queue:0,
-              enroll:false,
-              queueRef:rtb.collection('process').doc('ลงทะเบียนผู้ป่วย')
-            })              
-          }
-      })
-      
-
-      // register()
-    }
+        // register()
+      }
     }
 }
 </script>
