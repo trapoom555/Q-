@@ -251,8 +251,9 @@ export default {
                   type : 'process',
                   name : 'ลงทะเบียนผู้ป่วย',
                   status : f.q_run,
-                  waitConfirm : false
+                  
                 }],
+                waitConfirm : false,
                 queue : f.q_run
               }, { merge: true });
           }).catch(function(error) {

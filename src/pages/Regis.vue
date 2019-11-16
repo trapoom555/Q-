@@ -112,7 +112,7 @@ export default {
                     if (doc.exists) {
                         this.user = doc.data()
                         if(this.user.password == 'OP'){
-                            this.out = 'finish'
+                            this.out = ''
                         }
 
                         else this.out = 'already have this account'
