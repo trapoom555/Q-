@@ -4,7 +4,7 @@
     <div v-if= "user.waitConfirm" class="circle" style="background:#e0e0eb;">
       <div class="circle2">
         <div class="box-circle" style="border-bottom:0;padding-top:8%;"> 
-          <button @click="confirm" style="font-size:20px; height:100%;border:0; margin-top:25%;background:none; color: #333;" >กดที่นี่<br>เพื่อรับคิวถัดไป<div style = "font-size: 17px; margin-top: 3%; color: #555;">คิวถัดไปเหลือ {{user.queueRef.q_run - user.queueRef.q_call + 1}} คิว</div></button>
+          <button @click="confirm" style="font-size:20px; height:100%;border:0; margin-top:25%;background:none; color: #333;" >กดที่นี่<br>เพื่อรับคิวถัดไป<div style = "font-size: 17px; margin-top: 3%; color: #555;">เหลือ {{user.queueRef.q_run - user.queueRef.q_call + 1}} คิว</div></button>
         </div>
       </div>
     </div>
@@ -23,7 +23,7 @@
       <button v-if = "user.waitConfirm" @click="confirm">ยืนยันคิว</button>
       <div  v-if = "!user.waitConfirm">
       
-      <div class="box-item" style="font-size:27px; display:inline-block;">{{(user.queue-user.queueRef.q_call) > 0 ? parseInt(this.user.queueRef.est_time * (user.queue-user.queueRef.q_call)/ 60) + 1 : "-"}}</div>
+      <div class="box-item" style="font-size:27px; display:inline-block;">{{(user.queueRef.q_call) > 0 ? parseInt(this.user.queueRef.est_time * (user.queue-user.queueRef.q_call)/ 60) + 1 : "-"}}</div>
       <div>
         <div class="box-item" style="display:inline ; font-size:15px; color:grey;">นาที</div>
       </div>
@@ -214,16 +214,11 @@ export default {
             });
           }).then(function() {
               console.log("Transaction successfully committed!");
-              users.doc(user.ID).set({
-                process_list: [{
-                  type : 'process',
-                  name : 'ลงทะเบียนผู้ป่วย',
-                  status : f.q_run,
-                 
-                }],
-                 waitConfirm : false,
-                queue : f.q_run
-              }, { merge: true });
+              // var a = /user.process_list.push()
+              user.waitConfirm = false
+              user.queue = f.q_run
+              user.process_list[user.process_list.length-1].status = f.q_run
+              users.doc(user.ID).set(user);
           }).catch(function(error) {
               console.log("Transaction failed: ", error);
           });
@@ -247,17 +242,10 @@ export default {
                 q_list: f.q_list
               });
           }).then(function() {
-              console.log("Transaction successfully committed!");
-              users.doc(user.ID).set({
-                process_list: [{
-                  type : 'process',
-                  name : 'ลงทะเบียนผู้ป่วย',
-                  status : f.q_run,
-                  
-                }],
-                waitConfirm : false,
-                queue : f.q_run
-              }, { merge: true });
+               user.waitConfirm = false
+              user.queue = f.q_run
+              user.process_list[user.process_list.length-1].status = f.q_run
+              users.doc(user.ID).set(user);
           }).catch(function(error) {
               console.log("Transaction failed: ", error);
           })
