@@ -15,7 +15,7 @@
     <div class="box-circle"  >
       <div class="box-item" style="color:#737171;margin-top:20%; font-size: 4vw;">เหลืออีก :</div>
       <div v-if="user.process_list.length != 0">
-      <div class="box-item" style="font-size:30px; display:inline-block;" >{{(user.queueRef.q_call) > 0 ? user.queue-user.queueRef.q_call : 0+ " "}}</div>
+      <div class="box-item" style="font-size:30px; display:inline-block;" >{{(user.process_list[user.process_list.length - 1]) > 0 ? user.queue-user.queueRef.q_call : 0+ " "}}</div>
       <div class="box-item" style="display:inline-block; font-size: 5vw"> คิว</div>
       </div>
     </div>
@@ -23,7 +23,7 @@
       <button v-if = "user.waitConfirm" @click="confirm">ยืนยันคิว</button>
       <div  v-if = "!user.waitConfirm">
       
-      <div class="box-item" style="font-size:27px; display:inline-block;">{{(user.queueRef.q_call) > 0 ? parseInt(this.user.queueRef.est_time * (user.queue-user.queueRef.q_call)/ 60) + 1 : "-"}}</div>
+      <div class="box-item" style="font-size:27px; display:inline-block;">{{(user.process_list[user.process_list.length - 1]) > 0 ? parseInt(this.user.queueRef.est_time * (user.queue-user.queueRef.q_call)/ 60) + 1 : "-"}}</div>
       <div>
         <div class="box-item" style="display:inline ; font-size:15px; color:grey;">นาที</div>
       </div>
