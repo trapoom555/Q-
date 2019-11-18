@@ -1,7 +1,6 @@
 <template>
 <div class="noti">
-    <div><h1 style = "margin-bottom: 12%; color:#555">เลือกช่องทางการแจ้งเตือนเมื่อใกล้ถึงคิว</h1></div>
-    <router-link to="/Line"><button class="line" style = ""><img src = "../assets/line.png"><div style = "display: inline;position: relative; vertical-align: 30%">LINE</div></button></router-link>
+    <div><h1 style = "margin-bottom: 18%; color:#555">เลือกช่องทางการแจ้งเตือนเมื่อใกล้ถึงคิว</h1></div>
     <router-link to="/Gmail"><button class="gmail"><img src = "../assets/gmail.png"><div style = "display: inline;position: relative; vertical-align: 30%">Email</div></button></router-link>
     <router-link to="/QueueGlance"><button class="nono">ไม่รับการแจ้งเตือน</button></router-link>
 </div>
@@ -98,13 +97,13 @@ button{
     border: 1px solid #ccc;
     font-size: 3.7vw;
     display: block;
-    color: #666;
+    color: #333;
 }
 
 .line:focus{background: #ddd}
 .gmail:focus{background: #ddd}
 .nono:focus{background: #ddd}
-.noti{margin-top: 40%}
+.noti{margin-top: 45%}
 * {
     font-family: 'Noto Sans Thai Cound', sans-serif;
 }

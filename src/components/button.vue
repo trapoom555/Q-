@@ -23,6 +23,7 @@ button {
     height: 50px;
     font-size: 4vw;
     border: none;
+    color: black;
 
 }
 
