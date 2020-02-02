@@ -15,7 +15,7 @@
     <div class="box-circle"  >
       <div class="box-item" style="color:#737171;margin-top:20%; font-size: 4vw;">เหลืออีก :</div>
       <div v-if="user.process_list.length != 0">
-      <div class="box-item" style="font-size:30px; display:inline-block;" >{{(user.process_list[user.process_list.length - 1]) > 0 ? user.queue-user.queueRef.q_call : 0+ " "}}</div>
+      <div class="box-item" style="font-size:30px; display:inline-block;" >{{(user.process_list[user.process_list.length - 1].status) > 0 ? user.queue-user.queueRef.q_call : 0+ " "}}</div>
       <div class="box-item" style="display:inline-block; font-size: 5vw"> คิว</div>
       </div>
     </div>
@@ -23,7 +23,7 @@
       <button v-if = "user.waitConfirm" @click="confirm">ยืนยันคิว</button>
       <div  v-if = "!user.waitConfirm">
       
-      <div class="box-item" style="font-size:27px; display:inline-block;">{{(user.process_list[user.process_list.length - 1]) > 0 ? parseInt(this.user.queueRef.est_time * (user.queue-user.queueRef.q_call)/ 60) + 1 : "-"}}</div>
+      <div class="box-item" style="font-size:27px; display:inline-block;">{{(user.process_list[user.process_list.length - 1].status) > 0 ? parseInt(this.user.queueRef.est_time * (user.queue-user.queueRef.q_call)/ 60) + 1 : "-"}}</div>
       <div>
         <div class="box-item" style="display:inline ; font-size:15px; color:grey;">นาที</div>
       </div>
@@ -205,7 +205,7 @@ export default {
                 
             }
             f = doc.data()
-            console.log(f)
+            console.log('trappoom')
             f.q_run+=1
             f.q_list.push({userID:user.ID,queue:f.q_run})
             transaction.update(rtb.collection(temp.type).doc(temp.name),{
@@ -216,9 +216,11 @@ export default {
               console.log("Transaction successfully committed!");
               // var a = /user.process_list.push()
               user.waitConfirm = false
+             user.queueRef = rtb.collection(temp.type).doc(temp.name);
               user.queue = f.q_run
               user.process_list[user.process_list.length-1].status = f.q_run
               users.doc(user.ID).set(user);
+              console.log(user)
           }).catch(function(error) {
               console.log("Transaction failed: ", error);
           });
@@ -242,7 +244,13 @@ export default {
                 q_list: f.q_list
               });
           }).then(function() {
-               user.waitConfirm = false
+              user.waitConfirm = false
+              if(temp.type == "OPD"){
+                user.queueRef = rtb.collection("department/OPD/Doctors").doc(temp.name);
+              }
+              if(temp.type == "รับยา"){
+                user.queueRef = rtb.collection("process/รับยา/Counters").doc(temp.name);
+              }
               user.queue = f.q_run
               user.process_list[user.process_list.length-1].status = f.q_run
               users.doc(user.ID).set(user);
